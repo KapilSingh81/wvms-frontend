@@ -1,0 +1,125 @@
+<div class="relative flex items-center justify-center min-h-screen p-4" style="background: #E8EEF7;">
+
+  <!-- ============ LOGIN CARD ============ -->
+  <div class="relative max-w-[92%] rounded-3xl p-8 md:p-9 animate-fadeIn"
+       style="
+         background: #ffffff;
+         border: 1px solid #D5DCE6;
+         box-shadow: 0 20px 40px -12px rgba(44, 74, 110, 0.15),
+                     0 4px 12px -4px rgba(44, 74, 110, 0.08);
+       ">
+
+    <!-- ============ BRAND / LOGO ============ -->
+    <div class="flex flex-col items-center mb-7">
+      <img src="images/project-logo.png"
+           alt="WVMS Logo"
+           class="w-40 mb-3"
+           onerror="this.style.display='none'; document.getElementById('fallbackLogo').style.display='flex';" />
+      <!-- Fallback if logo.png is missing -->
+      <div id="fallbackLogo" style="display:none;" class="items-center gap-3 mb-3">
+        <div class="w-12 h-12 rounded-2xl flex items-center justify-center shadow-md"
+             style="background: linear-gradient(135deg, #3D5A80 0%, #2C4A6E 100%);">
+          <i class="fa-solid fa-shield-halved text-white text-xl"></i>
+        </div>
+        <div class="flex flex-col leading-tight text-left">
+          <span class="font-bold text-2xl tracking-wider" style="color: #1F2A44;">WVMS</span>
+          <span class="text-[10px] tracking-[0.2em] uppercase" style="color: #6B7A94;">Visitor Management</span>
+        </div>
+      </div>
+      <span class="text-[10px] tracking-[0.25em] uppercase mt-1" style="color: #6B7A94;">
+        Sign in to continue
+      </span>
+    </div>
+
+    <!-- ============ FORM ============ -->
+   <form class="flex flex-col gap-4" (submit)="onSubmit($event)" novalidate>
+
+      <!-- ---------- EMAIL ---------- -->
+      <div>
+        <div class="relative">
+          <!-- <i class="fa-regular fa-envelope absolute left-4 top-1/2 -translate-y-1/2 text-sm pointer-events-none"
+             style="color: #6B7A94;"></i> -->
+          <input type="text"
+                 placeholder="Email address"
+                 autocomplete="username"
+                 class="form-control pl-11 mb-1"
+                 [value]="form().email || null"
+                 (input)="setField('email', $any($event.target).value)"
+                 [class.border-red-500]="errors()['email'] && touched()['email']" />
+        </div>
+        @if (errors()['email'] && touched()['email']) {
+          <div class="text-xs mt-1.5 flex items-center gap-1.5 pl-1" style="color: #E63946;">
+            <i class="fa-solid fa-circle-exclamation"></i>
+            {{ errors()['email'] }}
+          </div>
+        }
+      </div>
+
+      <!-- ---------- PASSWORD ---------- -->
+      <div>
+        <div class="relative">
+          <!-- <i class="fa-solid fa-lock absolute left-4 top-1/2 -translate-y-1/2 text-sm pointer-events-none"
+             style="color: #6B7A94;"></i> -->
+          <input [type]="showPassword() ? 'text' : 'password'"
+                 placeholder="Password"
+                 autocomplete="current-password"
+                 class="form-control pl-11 pr-11 mb-1"
+                 [value]="form().password"
+                 (input)="setField('password', $any($event.target).value)"
+                 [class.border-red-500]="errors()['password'] && touched()['password']" />
+          <i class="absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer transition-colors fa-solid"
+             [class.fa-eye]="showPassword()"
+             [class.fa-eye-slash]="!showPassword()"
+             (click)="togglePasswordVisibility()"
+             style="color: #6B7A94;"
+             onmouseover="this.style.color='#3D5A80'"
+             onmouseout="this.style.color='#6B7A94'"></i>
+        </div>
+        @if (errors()['password'] && touched()['password']) {
+          <div class="text-xs mt-1.5 flex items-center gap-1.5 pl-1" style="color: #E63946;">
+            <i class="fa-solid fa-circle-exclamation"></i>
+            {{ errors()['password'] }}
+          </div>
+        }
+      </div>
+
+      <!-- ---------- SUBMIT ---------- -->
+       <!-- <button
+    class="btn btn-primary mt-2"
+    type="button"
+    (click)="redirectByRole()">
+
+    <i class="fa-solid fa-arrow-right-to-bracket"></i>
+    <span>Login</span>
+
+  </button> -->
+      <button class="btn btn-primary mt-2"
+              type="submit"
+              [disabled]="isLoading()">
+        @if (isLoading()) {
+          <i class="fa-solid fa-spinner fa-spin"></i>
+          <span>Signing in...</span>
+        } @else {
+          <i class="fa-solid fa-arrow-right-to-bracket"></i>
+          <span>Login</span>
+        }
+      </button>
+    </form>
+
+    <!-- ============ FOOTER ============ -->
+    <footer class="text-xs mt-6 text-center leading-relaxed" style="color: #6B7A94;">
+      © {{ currentYear() }} All rights reserved.
+      <span class="mx-1.5" style="color: #D5DCE6;">|</span>
+      Designed &amp; Developed by
+      <a href="https://www.skylabstech.com/"
+         target="_blank"
+         rel="noopener"
+         class="ml-1 font-medium underline underline-offset-2 transition-colors"
+         style="color: #3D5A80;"
+         onmouseover="this.style.color='#2C4A6E'"
+         onmouseout="this.style.color='#3D5A80'">
+        SSIPL
+      </a>
+    </footer>
+  </div>
+</div>

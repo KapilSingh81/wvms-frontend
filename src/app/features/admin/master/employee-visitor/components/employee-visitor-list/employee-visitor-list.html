@@ -1,0 +1,145 @@
+<div class="card">
+    <div class="card-header">
+        <div class="header-part">
+            <span>Employee List</span>
+            <div class="counting">
+                <span>
+                    {{ pagesize.count > 0 ? startValue : 0 }} -
+                    {{ pagesize.count > 0 ? lastValue : 0 }}
+                    OF {{ pagesize.count > 0 ? pagesize.count : 0 }} Records
+                </span>
+            </div>
+            @if (pagesize.count && pagesize.count > 0) {
+            <div class="row">
+                <div class="d-flex justify-content-center">
+                    <pagination-controls id="empVisitorId" [maxSize]="10" [responsive]="true" [nextLabel]="''"
+                        [previousLabel]="''" (pageChange)="onTablePageChange($event)">
+                    </pagination-controls>
+                </div>
+            </div>
+            }
+        </div>
+    </div>
+
+    <div class="card-body">
+        <div class="header-container flex flex-col sm:flex-row justify-between gap-4 py-2">
+            <div class="left-section flex items-center justify-between sm:justify-start space-x-2">
+                <div class="search-form">
+                    <input placeholder="Search for..." type="text" [(ngModel)]="searchKeyword"
+                        (input)="onSearch($event)" class="form-control search-input" />
+                    @if(searchKeyword) {
+                    <button type="button" class="btn-search" (click)="clearSearch()">
+                        <i class="fa fa-close"></i>
+                    </button>
+                    } @else {
+                    <button type="button" class="btn-search">
+                        <i class="fa fa-search"></i>
+                    </button>
+                    }
+                </div>
+                <div class="flex items-center justify-between sm:justify-start space-x-2">
+                    <label for="itemsPerPage" class="text-sm text-gray-700 whitespace-nowrap">Items per page:</label>
+                    <select id="itemsPerPage"
+                        class="block w-20 p-2 bg-white border border-gray-300 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-700"
+                        [(ngModel)]="pagesize.limit" (change)="onPageSizeChange($event)">
+                        @for (size of [25, 50, 100]; track $index) {
+                        <option [value]="size">{{ size }}</option>
+                        }
+                    </select>
+                </div>
+            </div>
+
+            <div class="right-section flex flex-col sm:flex-row gap-4 sm:gap-x-2 w-full sm:w-auto">
+                <button (click)="onAdd('')"
+                    class="!btn !btn-primary bg-[#696cff] hover:bg-[#787bff] text-white font-medium px-4 py-2 rounded-lg transition-colors duration-200 flex items-center gap-2 w-full sm:w-auto">
+                    <i class="fa fa-plus" aria-hidden="true"></i> Create Employee / Visitor
+                </button>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="overflow-auto">
+                    <div id="datatable_wrapper">
+                        @if (isLoading) {
+                        <div class="text-center py-6">
+                            <i class="fa fa-spinner fa-spin text-2xl text-gray-400"></i>
+                        </div>
+                        } @else {
+                        <table id="datatable" class="table table-striped nowrap dataTable no-footer dtr-inline"
+                            role="grid" style="width: 100%" width="100%">
+                            <thead>
+                                <tr role="row">
+                                    @for (col of columns; track $index) {
+                                    <th><span>{{ col?.title }}</span></th>
+                                    }
+                                </tr>
+                            </thead>
+                    <tbody>
+    @for (item of employeeVisitorList | paginate: {
+        id: 'empVisitorId',
+        itemsPerPage: pagesize.limit,
+        currentPage: pagesize.offset,
+        totalItems: pagesize.count
+    }; track $index) {
+    <tr>
+        <!-- S.No. -->
+        <td>{{ (pagesize.offset - 1) * pagesize.limit + $index + 1 }}</td>
+
+        <!-- ✅ Image — only if exists, no fallback -->
+       
+
+        <!-- Name -->
+        <td>{{ getFullName(item) }}</td>
+
+        <!-- Email -->
+        <td>{{ item?.email || 'NA' }}</td>
+
+        <!-- Phone -->
+        <td>{{ item?.phone || 'NA' }}</td>
+
+        <!-- Department -->
+        <td>{{ item?.department?.name || 'NA' }}</td>
+
+        <!-- Designation -->
+        <td>{{ item?.designation?.name || 'NA' }}</td>
+
+        <!-- Status -->
+        <td>
+            <span class="badge border rounded-lg! b-0 py-2 font-medium"
+                [ngClass]="item?.status ? 'bg-success text-white' : 'bg-danger text-white'">
+                {{ item?.status ? 'Active' : 'InActive' }}
+            </span>
+        </td>
+ <td>
+            @if (item?.image) {
+                <img [src]="getImageUrl(item)"
+                     (error)="onImageError($event)"
+                     alt="Photo"
+                     class="user-avatar" />
+            }
+        </td>
+        <!-- Action -->
+        <td class="flex space-x-2!">
+            <button class="btn btn-success" (click)="onAdd(item)">
+                <i class="fa fa-pencil"></i>
+            </button>
+            <button class="btn btn-danger" (click)="onDelete(item)">
+                <i class="fa fa-trash"></i>
+            </button>
+        </td>
+    </tr>
+    }
+</tbody>
+                        </table>
+                        }
+                    </div>
+                </div>
+
+                @if(!isLoading && employeeVisitorList.length === 0) {
+                <div class="text-center py-4 text-gray-500">No Employee / Visitor Available</div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

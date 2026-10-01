@@ -1,0 +1,91 @@
+:host {
+  display: block;
+}
+
+/* ============ Form Controls ============ */
+.form-control {
+  width: 100%;
+  padding: 0.85rem 1rem;
+  font-size: 0.95rem;
+  color: #1F2A44;
+  background: #F5F7FA;
+  border: 1px solid #D5DCE6;
+  border-radius: 0.85rem;
+  outline: none;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+
+  &::placeholder {
+    color: #8A97AC;
+    font-weight: 400;
+  }
+
+  &:focus {
+    border-color: #3D5A80;
+    background: #ffffff;
+    box-shadow: 0 0 0 4px rgba(61, 90, 128, 0.12);
+  }
+
+  &.border-red-500 {
+    border-color: #E63946 !important;
+    box-shadow: 0 0 0 3px rgba(230, 57, 70, 0.12);
+  }
+}
+
+/* ============ Buttons ============ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.85rem 1.5rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+  border: none;
+  border-radius: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  /* ---- Primary Blue Button (matches mobile "Next" button) ---- */
+  &.btn-primary {
+    background: #3D5A80;
+    color: #ffffff;
+    box-shadow: 0 6px 16px -6px rgba(61, 90, 128, 0.4);
+
+    &:hover:not(:disabled) {
+      background: #2C4A6E;
+      transform: translateY(-1px);
+      box-shadow: 0 10px 20px -8px rgba(44, 74, 110, 0.5);
+    }
+
+    &:active:not(:disabled) {
+      transform: translateY(0);
+    }
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+  }
+}
+
+/* ============ Animation ============ */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.45s ease-out;
+}
+
+/* ============ Responsive ============ */
+@media (max-width: 420px) {
+  .form-control {
+    padding: 0.75rem 0.9rem;
+    font-size: 0.9rem;
+  }
+}

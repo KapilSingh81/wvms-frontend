@@ -1,0 +1,31 @@
+<div class="modal-header text-center">
+    <h5>{{ title }}</h5>
+    <div class="close-modal" (click)="cancel()">
+        <i class="fa fa-close" style="cursor: pointer;"></i>
+    </div>
+</div>
+
+<div class="modal-body">
+    <div class="_card white-bg">
+        <div class="row">
+            <div class="col-md-12 mb-3">
+                <p class="text-center" [innerHTML]="content" style="font-size: 22px;"></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <div class="row">
+            <div class="col-md-6">
+                <button class="btn btn-success" (click)="ok()">
+                    {{ primaryActionLabel }}
+                </button>
+            </div>
+            <div class="col-md-6">
+                <button class="btn btn-danger" (click)="cancel()">
+                    {{ secondaryActionLabel }}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
