@@ -1,0 +1,164 @@
+<div class="modal-header text-center">
+    <h5 class="modal-title">{{ tittle }} User</h5>
+    <div class="close-modal">
+        <i class="fa fa-close" style="cursor: pointer;" (click)="cancel()"></i>
+    </div>
+</div>
+
+<div class="modal-body">
+    <form [formGroup]="userForm" (ngSubmit)="submit()">
+        <div class="_card white-bg">
+            <div class="row">
+
+                <!-- First Name -->
+                <div class="col-md-4 mb-3">
+                    <label class="form-label">First Name <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" placeholder="Enter First Name"
+                        formControlName="first_name" />
+                    @if (userForm.get('first_name')?.invalid &&
+                    userForm.get('first_name')?.touched) {
+                    <span class="text-danger">First Name is required</span>
+                    }
+                </div>
+
+                <!-- Last Name -->
+                <div class="col-md-4 mb-3">
+                    <label class="form-label">Last Name <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" placeholder="Enter Last Name"
+                        formControlName="last_name" />
+                    @if (userForm.get('last_name')?.invalid &&
+                    userForm.get('last_name')?.touched) {
+                    <span class="text-danger">Last Name is required</span>
+                    }
+                </div>
+
+                <!-- Email -->
+                <div class="col-md-4 mb-3">
+                    <label class="form-label">Email <span class="text-danger">*</span></label>
+                    <input type="email" class="form-control" placeholder="Enter Email"
+                        formControlName="email" />
+                    @if (userForm.get('email')?.invalid &&
+                    userForm.get('email')?.touched) {
+                    <span class="text-danger">Valid Email is required</span>
+                    }
+                </div>
+
+                <!-- Phone -->
+                <div class="col-md-4 mb-3">
+                    <label class="form-label">Phone <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" placeholder="Enter 10-digit Phone"
+                        formControlName="phone" />
+                    @if (userForm.get('phone')?.invalid &&
+                    userForm.get('phone')?.touched) {
+                    <span class="text-danger">Valid 10-digit Phone is required</span>
+                    }
+                </div>
+
+                <!-- Username -->
+                <div class="col-md-4 mb-3">
+                    <label class="form-label">Username</label>
+                    <input type="text" class="form-control" placeholder="Enter Username"
+                        formControlName="username" />
+                </div>
+
+                <!-- ✅ Role — ngx-select-dropdown -->
+                <div class="col-md-4 mb-3">
+                    <label class="form-label">
+                        Role <span class="text-danger">*</span>
+                    </label>
+                    <ngx-select-dropdown
+                        [config]="roleConfig"
+                        [options]="roleList"
+                        [(ngModel)]="selectedRole"
+                        [ngModelOptions]="{ standalone: true }"
+                        (change)="onSelectRole($event)">
+                    </ngx-select-dropdown>
+
+                    @if (userForm.get('role_id')?.invalid &&
+                         userForm.get('role_id')?.touched) {
+                    <span class="text-danger">Role is required</span>
+                    }
+                </div>
+
+                <!-- Password -->
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">
+                        Password
+                        @if (!editData) { <span class="text-danger">*</span> }
+                    </label>
+                    <input type="password" class="form-control"
+                        [placeholder]="editData ? 'Leave blank to keep same' : 'Enter Password'"
+                        formControlName="password" />
+                    @if (userForm.get('password')?.invalid &&
+                    userForm.get('password')?.touched) {
+                    <span class="text-danger">Password must be at least 6 characters</span>
+                    }
+                </div>
+
+                <!-- Status -->
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Status <span class="text-danger">*</span></label>
+                    <select class="form-control" formControlName="status">
+                        @for (s of StatusDropdown; track s) {
+                        <option [ngValue]="s.value">{{ s.text }}</option>
+                        }
+                    </select>
+                </div>
+
+                <!-- Address -->
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Address</label>
+                    <textarea class="form-control" rows="2"
+                        placeholder="Enter Address"
+                        formControlName="address"></textarea>
+                </div>
+
+                <!-- Image Upload -->
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Profile Image</label>
+
+                    <div class="file-input-wrapper">
+                        <label for="imageInput" class="file-input-btn">
+                            <i class="fa fa-cloud-upload-alt"></i>
+                            Choose File
+                        </label>
+
+                        <span class="file-name">
+                            @if (imageFile) {
+                                <i class="fa fa-file-image file-icon"></i>
+                                {{ imageFile.name }}
+                            } @else {
+                                <span class="no-file">No file chosen</span>
+                            }
+                        </span>
+
+                        @if (imageFile) {
+                        <button type="button" class="file-clear-btn" (click)="removeImage()" title="Remove">
+                            <i class="fa fa-times"></i>
+                        </button>
+                        }
+
+                        <input id="imageInput" type="file" accept="image/*"
+                               (change)="onFileSelected($event)" hidden />
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="button-container">
+                <button class="btn btn-success" type="submit" [disabled]="isSubmitting">
+                    @if (isSubmitting) {
+                    <i class="fa fa-spinner fa-spin"></i> Saving...
+                    } @else {
+                    {{ editData ? 'Update' : 'Submit' }}
+                    }
+                </button>
+                <button class="btn btn-danger" type="button" (click)="cancel()">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </form>
+</div>

@@ -1,1 +1,225 @@
-<p>manage-dashboard works!</p>
+<div class="dashboard-container">
+    <div class="filter-bar">
+        <div class="filter-group">
+            <label class="filter-label">From</label>
+            <input type="datetime-local" class="form-control filter-input" [(ngModel)]="fromDate" />
+        </div>
+
+        <div class="filter-group">
+            <label class="filter-label">To</label>
+            <input type="datetime-local" class="form-control filter-input" [(ngModel)]="toDate" />
+        </div>
+
+        <div class="filter-group filter-actions">
+            <button type="button" class="btn-show" (click)="onShowClick()" [disabled]="isFiltering">
+                @if (isFiltering) {
+                <i class="fa fa-spinner fa-spin"></i> Loading...
+                } @else {
+                <i class="fa fa-search"></i> Show
+                }
+            </button>
+        </div>
+
+        <div class="filter-group filter-actions">
+            <button type="button" class="btn-reset" (click)="onResetFilter()">
+                <i class="fa fa-refresh"></i> Reset
+            </button>
+        </div>
+
+        <div class="filter-info">
+            <i class="fa fa-info-circle"></i>
+            <span>Showing <strong>{{ selectedType | titlecase }}</strong> data</span>
+        </div>
+    </div>
+
+    <div class="cards-grid">
+        @for (card of cards; track card.key) {
+        <div class="stat-card" [class.active]="isCardActive(card)" (click)="onCardClick(card)">
+            <div class="card-icon" [style.background]="card.color + '15'" [style.color]="card.color">
+                <i class="fa" [ngClass]="card.icon"></i>
+            </div>
+            <div class="card-info">
+                <span class="card-value">{{ card.value }}</span>
+                <span class="card-title">{{ card.title }}</span>
+            </div>
+            @if (isCardActive(card)) {
+            <span class="active-dot"></span>
+            }
+        </div>
+        }
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <div class="header-part">
+                <span>{{ isEmployeeView ? 'Employee List' : 'Visitor Activity List' }}</span>
+                <div class="counting">
+                    <span>
+                        {{ pagesize.count > 0 ? startValue : 0 }} -
+                        {{ pagesize.count > 0 ? lastValue : 0 }}
+                        OF {{ pagesize.count > 0 ? pagesize.count : 0 }} Records
+                    </span>
+                </div>
+
+                @if (pagesize.count && pagesize.count > 0) {
+                <div class="row">
+                    <div class="d-flex justify-content-center">
+                        <pagination-controls id="dashboardId" [maxSize]="10" [responsive]="true" [nextLabel]="''"
+                            [previousLabel]="''" (pageChange)="onTablePageChange($event)">
+                        </pagination-controls>
+                    </div>
+                </div>
+                }
+            </div>
+        </div>
+
+        <div class="card-body">
+            <div class="header-container flex flex-col sm:flex-row justify-between gap-4 py-2">
+                <div class="left-section flex items-center justify-between sm:justify-start space-x-2">
+                    <div class="search-form">
+                        <input placeholder="Search..." type="text" [(ngModel)]="searchKeyword"
+                            (input)="onSearch($event)" class="form-control search-input" />
+                        @if (searchKeyword) {
+                        <button type="button" class="btn-search" (click)="clearSearch()">
+                            <i class="fa fa-close"></i>
+                        </button>
+                        } @else {
+                        <button type="button" class="btn-search">
+                            <i class="fa fa-search"></i>
+                        </button>
+                        }
+                    </div>
+
+                    <div class="flex items-center justify-between sm:justify-start space-x-2">
+                        <label for="itemsPerPage" class="text-sm text-gray-700 whitespace-nowrap">Items per
+                            page:</label>
+                        <select id="itemsPerPage"
+                            class="block w-20 p-2 bg-white border border-gray-300 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-700"
+                            [(ngModel)]="pagesize.limit" (change)="onPageSizeChange($event)">
+                            @for (size of [25, 50, 100]; track $index) {
+                            <option [value]="size">{{ size }}</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="right-section flex flex-col sm:flex-row gap-4 sm:gap-x-2 w-full sm:w-auto">
+                    <button type="button" class="btn btn-success btn-sm d-flex align-items-center gap-1"
+                        (click)="exportToExcel()" [disabled]="isExporting || allVisitors.length === 0">
+                        @if (isExporting) {
+                        <i class="fas fa-spinner fa-spin"></i> Exporting...
+                        } @else {
+                        <i class="fas fa-file-excel"></i> Export Excel
+                        }
+                    </button>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="overflow-auto">
+                        <div id="datatable_wrapper">
+                            @if (isLoading) {
+                            <div class="text-center py-6">
+                                <i class="fa fa-spinner fa-spin text-2xl text-gray-400"></i>
+                            </div>
+                            } @else {
+                            <table id="datatable" class="table table-striped nowrap dataTable no-footer dtr-inline"
+                                role="grid" style="width: 100%" width="100%">
+                                <thead>
+                                    <tr role="row">
+                                        @for (col of columns; track col.key) {
+                                        <th>
+                                            <span>{{ col.title }}</span>
+                                        </th>
+                                        }
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    @for (
+                                    item of visitorList
+                                    | paginate
+                                    : {
+                                    id: 'dashboardId',
+                                    itemsPerPage: pagesize.limit,
+                                    currentPage: pagesize.offset,
+                                    totalItems: pagesize.count,
+                                    };
+                                    track $index
+                                    ) {
+                                    <tr>
+                                        <td>{{ (pagesize.offset - 1) * pagesize.limit + $index + 1 }}</td>
+
+                                        @if (isEmployeeView) {
+                                        <!-- ============ EMPLOYEE VIEW ============ -->
+                                        <td>
+                                            <span class="visitor-name">{{ getFullName(item) }}</span>
+                                        </td>
+                                        <td>{{ item?.email || 'NA' }}</td>
+                                        <td>{{ item?.phone || 'NA' }}</td>
+                                        <td>{{ item?.department?.name || 'NA' }}</td>
+                                        <td>{{ item?.designation?.name || 'NA' }}</td>
+                                        <td>
+                                            @if (hasImage(item)) {
+                                            <img [src]="getImageUrl(item)" alt="Employee" class="user-image"
+                                                (error)="onImageError($event)" />
+                                            }
+                                        </td>
+                                        <td>
+                                            <span class="badge border rounded-lg! b-0 py-2 font-medium"
+                                                [ngClass]="getStatusBadge(item?.status)">
+                                                {{ getStatusLabel(item?.status) }}
+                                            </span>
+                                        </td>
+                                        } @else {
+                                        <td><span class="visitor-name">{{ getFullName(item) }}</span></td>
+                                        <td>{{ item?.national_id_no || 'NA' }}</td>
+                                        <td>{{ item?.phone || 'NA' }}</td>
+                                        <td>{{ getHostName(item) }}</td>
+                                        <td>{{ item?.purpose || 'NA' }}</td>
+                                        <td>{{ formatTime(item?.check_in_time) }}</td>
+                                        <td>{{ formatTime(item?.check_out_time) }}</td>
+                                        <td>
+                                            <span class="badge border rounded-lg! b-0 py-2 font-medium"
+                                                [ngClass]="getStatusBadge(item?.visit_status)">
+                                                {{ getStatusLabel(item?.visit_status) }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            @if (hasImage(item)) {
+                                            <img [src]="getImageUrl(item)" alt="Visitor" class="user-image"
+                                                (error)="onImageError($event)" />
+                                            }
+                                        </td>
+                                        <td>
+                                            <div class="d-flex align-items-center gap-2">
+                                                <button type="button" class="btn btn-info btn-sm text-white"
+                                                    (click)="onViewDetails(item)" title="View Details">
+                                                    <i class="fa fa-eye"></i>
+                                                </button>
+                                                @if (isStillInside(item)) {
+                                                <button type="button" class="btn btn-warning btn-sm"
+                                                    (click)="onCheckout(item)" title="Checkout Visitor">
+                                                    <i class="fa fa-sign-out-alt"></i>
+                                                </button>
+                                                }
+                                            </div>
+                                        </td>
+                                        }
+                                    </tr>
+                                    }
+                                </tbody>
+                            </table>
+                            }
+                        </div>
+                    </div>
+                    @if (!isLoading && visitorList.length === 0) {
+                    <div class="text-center py-4 text-gray-500">
+                        {{ isEmployeeView ? 'No Employee Available' : 'No Visitors Available' }}
+                    </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,195 @@
+<div class="modal-header text-center">
+    <h5 class="modal-title">Visitor Details</h5>
+    <div class="close-modal">
+        <i class="fa fa-close" style="cursor: pointer;" (click)="cancel()"></i>
+    </div>
+</div>
+
+<div class="modal-body">
+    <div class="visitor-details-wrapper">
+        <div class="details-header">
+            <div class="header-photo">
+                @if (hasImage()) {
+                <img [src]="getImageUrl()" alt="Visitor" class="visitor-photo" (error)="onImageError($event)" />
+                } @else {
+                <div class="photo-placeholder">
+                    <i class="fa fa-user"></i>
+                </div>
+                }
+            </div>
+
+            <div class="header-info">
+                <h3 class="visitor-name-full">
+                    {{ visitor?.first_name }} {{ visitor?.last_name }}
+                </h3>
+                <p class="visitor-company">
+                    <i class="fa fa-building"></i>
+                    {{ visitor?.company_name || 'No Company' }}
+                </p>
+                <span class="status-badge" [ngClass]="getStatusBadge()">
+                    <i class="fa fa-circle"></i>
+                    {{ getStatusLabel() }}
+                </span>
+            </div>
+        </div>
+        <div class="details-section">
+            <h4 class="section-title">
+                <i class="fa fa-user-circle"></i>
+                Personal Information
+            </h4>
+            <div class="details-grid">
+                <div class="detail-item">
+                    <label>First Name</label>
+                    <span>{{ visitor?.first_name || 'NA' }}</span>
+                </div>
+
+                <div class="detail-item">
+                    <label>Last Name</label>
+                    <span>{{ visitor?.last_name || 'NA' }}</span>
+                </div>
+
+                <div class="detail-item">
+                    <label>Email</label>
+                    <span>{{ visitor?.email || 'NA' }}</span>
+                </div>
+
+                <div class="detail-item">
+                    <label>Phone</label>
+                    <span>{{ visitor?.phone || 'NA' }}</span>
+                </div>
+
+                <div class="detail-item">
+                    <label>Gender</label>
+                    <span>{{ visitor?.gender || 'NA' }}</span>
+                </div>
+
+                <div class="detail-item">
+                    <label>Aadhaar / National ID</label>
+                    <span>{{ visitor?.national_id_no || 'NA' }}</span>
+                </div>
+
+                <div class="detail-item full-width">
+                    <label>Address</label>
+                    <span>{{ visitor?.address || 'NA' }}</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="details-section">
+            <h4 class="section-title">
+                <i class="fa fa-info-circle"></i>
+                Visit Information
+            </h4>
+
+            <div class="details-grid">
+                <div class="detail-item">
+                    <label>Purpose</label>
+                    <span>{{ visitor?.purpose || 'NA' }}</span>
+                </div>
+
+                <div class="detail-item">
+                    <label>Visit Status</label>
+                    <span>{{ getStatusLabel() }}</span>
+                </div>
+
+                <div class="detail-item">
+                    <label>Check In Time</label>
+                    <span>
+                        <i class="fa fa-sign-in-alt text-success"></i>
+                        {{ formatDateTime(visitor?.check_in_time) }}
+                    </span>
+                </div>
+
+                <div class="detail-item">
+                    <label>Check Out Time</label>
+                    <span>
+                        <i class="fa fa-sign-out-alt text-warning"></i>
+                        {{ formatDateTime(visitor?.check_out_time) }}
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="details-section">
+            <h4 class="section-title">
+                <i class="fa fa-user-tie"></i>
+                Person to Meet (Host)
+            </h4>
+
+            <div class="details-grid three-column-grid">
+                <div class="detail-item">
+                    <label>First Name</label>
+                    <span>{{ visitor?.employee?.first_name || 'NA' }}</span>
+                </div>
+
+                <div class="detail-item">
+                    <label>Last Name</label>
+                    <span>{{ visitor?.employee?.last_name || 'NA' }}</span>
+                </div>
+
+                <div class="detail-item">
+                    <label>Department</label>
+                    <span>{{ visitor?.employee?.department?.name || 'NA' }}</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="details-section">
+            <h4 class="section-title">
+                <i class="fa fa-user-plus"></i>
+                Created By
+            </h4>
+
+            <div class="details-grid three-column-grid">
+                <div class="detail-item">
+                    <label>First Name</label>
+                    <span>{{ visitor?.created_by_user?.first_name || 'NA' }}</span>
+                </div>
+
+                <div class="detail-item">
+                    <label>Last Name</label>
+                    <span>{{ visitor?.created_by_user?.last_name || 'NA' }}</span>
+                </div>
+
+                <div class="detail-item">
+                    <label>Username</label>
+                    <span>{{ visitor?.created_by_user?.username || 'NA' }}</span>
+                </div>
+            </div>
+        </div>
+
+        @if (visitor?.checked_out_by_user) {
+        <div class="details-section">
+            <h4 class="section-title">
+                <i class="fa fa-sign-out-alt"></i>
+                Checked Out By
+            </h4>
+
+            <div class="details-grid three-column-grid">
+                <div class="detail-item">
+                    <label>First Name</label>
+                    <span>{{ visitor?.checked_out_by_user?.first_name || 'NA' }}</span>
+                </div>
+
+                <div class="detail-item">
+                    <label>Last Name</label>
+                    <span>{{ visitor?.checked_out_by_user?.last_name || 'NA' }}</span>
+                </div>
+
+                <div class="detail-item">
+                    <label>Username</label>
+                    <span>{{ visitor?.checked_out_by_user?.username || 'NA' }}</span>
+                </div>
+
+            </div>
+        </div>
+        }
+
+    </div>
+</div>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="cancel()">
+        Close
+    </button>
+</div>

@@ -1,0 +1,303 @@
+:host {
+  display: block;
+}
+
+/* ==================== MODAL HEADER ==================== */
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid #e5e7eb;
+  background: #fff;
+  border-radius: 12px 12px 0 0;
+
+  .modal-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #111827;
+    margin: 0;
+  }
+
+  .close-modal i {
+    color: #9ca3af;
+    font-size: 1rem;
+    transition: color 0.15s;
+
+    &:hover {
+      color: #ef4444;
+    }
+  }
+}
+
+/* ==================== MODAL BODY ==================== */
+.modal-body {
+  padding: 1.25rem;
+  max-height: 75vh;
+  overflow-y: auto;
+  background: #f9fafb;
+}
+
+/* ==================== MODAL FOOTER ==================== */
+.modal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  padding: 1rem 1.25rem;
+  border-top: 1px solid #e5e7eb;
+  background: #fff;
+  border-radius: 0 0 12px 12px;
+
+  .btn {
+    padding: 0.5rem 1.25rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.15s;
+
+    &.btn-secondary {
+      background: #6b7280;
+      color: #fff;
+
+      &:hover {
+        background: #4b5563;
+      }
+    }
+  }
+}
+
+/* ==================== VISITOR DETAILS WRAPPER ==================== */
+.visitor-details-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* ==================== HEADER WITH PHOTO ==================== */
+.details-header {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 1.5rem;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  color: #111827;
+}
+
+.header-photo {
+  flex-shrink: 0;
+}
+
+.visitor-photo {
+  width: 90px;
+  height: 90px;
+  border-radius: 12px;
+  object-fit: cover;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+}
+
+.photo-placeholder {
+  width: 90px;
+  height: 90px;
+  border-radius: 12px;
+  background: #f3f4f6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #e5e7eb;
+
+  i {
+    font-size: 2rem;
+    color: #9ca3af;
+  }
+}
+
+.header-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.visitor-name-full {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0 0 0.4rem;
+  color: #111827;
+}
+
+.visitor-company {
+  font-size: 0.875rem;
+  margin: 0 0 0.75rem;
+  color: #6b7280;
+
+  i {
+    margin-right: 6px;
+    color: #696cff;
+  }
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: 6px;
+  background: #f3f4f6;
+  color: #4b5563;
+
+  i {
+    font-size: 0.5rem;
+  }
+
+  &.badge-success {
+    background: #d1fae5;
+    color: #065f46;
+
+    i {
+      color: #10b981;
+    }
+  }
+
+  &.badge-warning {
+    background: #fef3c7;
+    color: #92400e;
+
+    i {
+      color: #f59e0b;
+    }
+  }
+
+  &.badge-secondary {
+    background: #f3f4f6;
+    color: #4b5563;
+
+    i {
+      color: #9ca3af;
+    }
+  }
+}
+
+/* ==================== DETAILS SECTIONS ==================== */
+.details-section {
+  padding: 1rem 1.25rem 1.25rem;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #111827;
+  margin: 0 0 1rem 0;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid #f3f4f6;
+
+  i {
+    color: #696cff;
+    font-size: 0.9rem;
+    width: 20px;
+    text-align: center;
+  }
+}
+
+/* ==================== DETAILS GRID ==================== */
+.details-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.85rem 1.5rem;
+
+  @media (max-width: 576px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ==================== DETAIL ITEM ==================== */
+.detail-item {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+
+  &.full-width {
+    grid-column: 1 / -1;
+  }
+
+  label {
+    font-size: 0.68rem;
+    font-weight: 600;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  span {
+    font-size: 0.875rem;
+    color: #111827;
+    font-weight: 500;
+    word-break: break-word;
+
+    i {
+      margin-right: 4px;
+
+      &.text-success {
+        color: #10b981;
+      }
+
+      &.text-warning {
+        color: #f59e0b;
+      }
+    }
+  }
+}
+
+/* ==================== BADGES ==================== */
+.badge {
+  display: inline-block;
+  padding: 3px 10px;
+  font-size: 0.7rem;
+  font-weight: 500;
+  border-radius: 6px;
+
+  &.badge-success {
+    background: #d1fae5;
+    color: #065f46;
+  }
+
+  &.badge-danger {
+    background: #fee2e2;
+    color: #991b1b;
+  }
+}
+
+/* ==================== SCROLLBAR ==================== */
+.modal-body::-webkit-scrollbar {
+  width: 6px;
+}
+
+.modal-body::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.modal-body::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 3px;
+
+  &:hover {
+    background: #9ca3af;
+  }
+}
+
+/* ==================== THREE COLUMN GRID ==================== */
+.three-column-grid {
+  grid-template-columns: repeat(3, 1fr);
+}

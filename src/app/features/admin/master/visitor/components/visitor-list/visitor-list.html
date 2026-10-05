@@ -1,18 +1,18 @@
 <div class="card">
     <div class="card-header">
         <div class="header-part">
-            <span>Employee List</span>
+            <span>Visitor List</span>
             <div class="counting">
                 <span>
                     {{ pagesize.count > 0 ? startValue : 0 }} -
                     {{ pagesize.count > 0 ? lastValue : 0 }}
-                    OF {{ pagesize.count > 0 ? pagesize.count : 0 }} Employee
+                    OF {{ pagesize.count > 0 ? pagesize.count : 0 }} Visitor
                 </span>
             </div>
             @if (pagesize.count && pagesize.count > 0) {
             <div class="row">
                 <div class="d-flex justify-content-center">
-                    <pagination-controls id="empVisitorId" [maxSize]="10" [responsive]="true" [nextLabel]="''"
+                    <pagination-controls id="visitorId" [maxSize]="10" [responsive]="true" [nextLabel]="''"
                         [previousLabel]="''" (pageChange)="onTablePageChange($event)">
                     </pagination-controls>
                 </div>
@@ -53,7 +53,7 @@
                 <button (click)="onAdd('')"
                     class="btn btn-primary bg-blue-600! hover:bg-blue-700! border-blue-600! hover:border-blue-700! text-white! text-sm! font-medium! px-3! py-1.5! rounded-md! shadow-sm! transition-all! duration-200! inline-flex! items-center! justify-center! gap-1.5!">
                     <i class="fa fa-plus" aria-hidden="true"></i>
-                    Create Employee
+                    Check-In Visitor
                 </button>
             </div>
         </div>
@@ -80,10 +80,10 @@
                             </thead>
                             <tbody>
                                 @for (
-                                item of employeeVisitorList
+                                item of visitorList
                                 | paginate
                                 : {
-                                id: 'empVisitorId',
+                                id: 'visitorId',
                                 itemsPerPage: pagesize.limit,
                                 currentPage: pagesize.offset,
                                 totalItems: pagesize.count,
@@ -91,48 +91,58 @@
                                 track $index
                                 ) {
                                 <tr>
-                                    <!-- S.No. -->
                                     <td>{{ (pagesize.offset - 1) * pagesize.limit + $index + 1 }}</td>
 
-                                    <!-- ✅ Image — only if exists, no fallback -->
-
-                                    <!-- Name -->
                                     <td>{{ getFullName(item) }}</td>
 
-                                    <!-- Email -->
-                                    <td>{{ item?.email || 'NA' }}</td>
-
-                                    <!-- Phone -->
                                     <td>{{ item?.phone || 'NA' }}</td>
 
-                                    <!-- Department -->
-                                    <td>{{ item?.department?.name || 'NA' }}</td>
+                                    <td>{{ item?.national_id_no || 'NA' }}</td>
 
-                                    <!-- Designation -->
-                                    <td>{{ item?.designation?.name || 'NA' }}</td>
+                                    <td>{{ item?.company_name || 'NA' }}</td>
 
-                                    <!-- Status -->
                                     <td>
-                                        <span class="badge border rounded-lg! b-0 py-2 font-medium" [ngClass]="
-                            item?.status ? 'bg-success text-white' : 'bg-danger text-white'
-                          ">
-                                            {{ item?.status ? 'Active' : 'InActive' }}
-                                        </span>
+                                        {{
+                                        item?.employee?.first_name
+                                        ? (item?.employee?.first_name + ' ' + (item?.employee?.last_name || '')).trim()
+                                        : (item?.employee_name || 'NA')
+                                        }}
                                     </td>
+
+                                    <td>{{ item?.purpose || 'NA' }}</td>
+
+                                    <td>
+                                        {{ item?.check_in_time || item?.checkin_time || item?.created_at || 'NA' }}
+                                    </td>
+
+                                    <td>
+                                        {{ item?.check_out_time || item?.checkout_time || '—' }}
+                                    </td>
+
                                     <td class="pan-card-cell">
                                         @if (item?.image) {
-                                        <img [src]="getImageUrl(item)" (error)="onImageError($event)" alt="PAN Card"
+                                        <img [src]="getImageUrl(item)" (error)="onImageError($event)" alt="Visitor"
                                             class="user-image" />
                                         }
                                     </td>
-                                    <!-- Action -->
+
                                     <td>
                                         <div class="d-flex align-items-center gap-2">
+                                            <!-- Edit Button -->
                                             <button type="button" class="btn btn-success btn-sm text-white"
                                                 (click)="onAdd(item)" title="Edit">
                                                 <i class="fa fa-pencil"></i>
                                             </button>
 
+                                            <!-- Checkout Button -->
+                                            @if (canCheckout(item)) {
+                                            <button type="button" class="btn btn-warning btn-sm"
+                                                (click)="onCheckout(item)" title="Check-Out">
+                                                <i class="fa fa-sign-out-alt"></i>
+                                            </button>
+                                            }
+
+                                            <!-- Delete Button -->
                                             <button type="button" class="btn btn-danger btn-sm text-white"
                                                 (click)="onDelete(item)" title="Delete">
                                                 <i class="fa fa-trash"></i>
@@ -147,8 +157,8 @@
                     </div>
                 </div>
 
-                @if (!isLoading && employeeVisitorList.length === 0) {
-                <div class="text-center py-4 text-gray-500">No Employee / Visitor Available</div>
+                @if (!isLoading && visitorList.length === 0) {
+                <div class="text-center py-4 text-gray-500">No Visitor Available</div>
                 }
             </div>
         </div>

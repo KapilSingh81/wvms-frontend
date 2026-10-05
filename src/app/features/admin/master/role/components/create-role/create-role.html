@@ -1,0 +1,64 @@
+<div class="modal-header text-center">
+    <h5 class="modal-title">{{ tittle }} Role</h5>
+    <div class="close-modal">
+        <i class="fa fa-close" style="cursor: pointer;" (click)="cancel()"></i>
+    </div>
+</div>
+
+<div class="modal-body">
+    <form [formGroup]="roleForm" (ngSubmit)="submit()">
+        <div class="_card white-bg">
+            <div class="row">
+
+                <!-- Role Name -->
+                <div class="col-md-12 mb-3">
+                    <label class="form-label">
+                        Role Name <span class="text-danger">*</span>
+                    </label>
+                    <input type="text" class="form-control" placeholder="Enter Role Name"
+                        formControlName="name" />
+
+                    @if (roleForm.get('name')?.invalid &&
+                    (roleForm.get('name')?.dirty ||
+                    roleForm.get('name')?.touched)) {
+                    <span class="text-danger">Role Name is required</span>
+                    }
+                </div>
+
+                <!-- Status -->
+                <div class="col-md-12 mb-3">
+                    <label class="form-label">
+                        Status <span class="text-danger">*</span>
+                    </label>
+                    <select class="form-control" formControlName="status">
+                        @for (data of StatusDropdown; track data) {
+                        <option [ngValue]="data.value">{{ data.text }}</option>
+                        }
+                    </select>
+
+                    @if (roleForm.get('status')?.invalid &&
+                    (roleForm.get('status')?.dirty ||
+                    roleForm.get('status')?.touched)) {
+                    <span class="text-danger">Status is required</span>
+                    }
+                </div>
+
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="button-container">
+                <button class="btn btn-success" type="submit" [disabled]="isSubmitting">
+                    @if (isSubmitting) {
+                    <i class="fa fa-spinner fa-spin"></i> Saving...
+                    } @else {
+                    {{ editData ? 'Update' : 'Submit' }}
+                    }
+                </button>
+                <button class="btn btn-danger" type="button" (click)="cancel()">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </form>
+</div>

@@ -1,18 +1,20 @@
 <div class="card">
     <div class="card-header">
         <div class="header-part">
-            <span>Employee List</span>
+            <span>Role List</span>
             <div class="counting">
                 <span>
                     {{ pagesize.count > 0 ? startValue : 0 }} -
                     {{ pagesize.count > 0 ? lastValue : 0 }}
-                    OF {{ pagesize.count > 0 ? pagesize.count : 0 }} Employee
+                    OF {{ pagesize.count > 0 ? pagesize.count : 0 }} Role
                 </span>
             </div>
+
+            <!-- ✅ Pagination Upar (header me) -->
             @if (pagesize.count && pagesize.count > 0) {
             <div class="row">
                 <div class="d-flex justify-content-center">
-                    <pagination-controls id="empVisitorId" [maxSize]="10" [responsive]="true" [nextLabel]="''"
+                    <pagination-controls id="roleId" [maxSize]="10" [responsive]="true" [nextLabel]="''"
                         [previousLabel]="''" (pageChange)="onTablePageChange($event)">
                     </pagination-controls>
                 </div>
@@ -37,6 +39,7 @@
                     </button>
                     }
                 </div>
+
                 <div class="flex items-center justify-between sm:justify-start space-x-2">
                     <label for="itemsPerPage" class="text-sm text-gray-700 whitespace-nowrap">Items per page:</label>
                     <select id="itemsPerPage"
@@ -50,11 +53,11 @@
             </div>
 
             <div class="right-section flex flex-col sm:flex-row gap-4 sm:gap-x-2 w-full sm:w-auto">
-                <button (click)="onAdd('')"
-                    class="btn btn-primary bg-blue-600! hover:bg-blue-700! border-blue-600! hover:border-blue-700! text-white! text-sm! font-medium! px-3! py-1.5! rounded-md! shadow-sm! transition-all! duration-200! inline-flex! items-center! justify-center! gap-1.5!">
-                    <i class="fa fa-plus" aria-hidden="true"></i>
-                    Create Employee
-                </button>
+               <button (click)="onAddRole('')"
+    class="btn btn-primary bg-blue-600! hover:bg-blue-700! border-blue-600! hover:border-blue-700! text-white! text-sm! font-medium! px-3! py-1.5! rounded-md! shadow-sm! transition-all! duration-200! inline-flex! items-center! justify-center! gap-1.5!">
+    <i class="fa fa-plus" aria-hidden="true"></i>
+    Create Role
+</button>
             </div>
         </div>
 
@@ -80,10 +83,10 @@
                             </thead>
                             <tbody>
                                 @for (
-                                item of employeeVisitorList
+                                item of roleList
                                 | paginate
                                 : {
-                                id: 'empVisitorId',
+                                id: 'roleId',
                                 itemsPerPage: pagesize.limit,
                                 currentPage: pagesize.offset,
                                 totalItems: pagesize.count,
@@ -91,27 +94,8 @@
                                 track $index
                                 ) {
                                 <tr>
-                                    <!-- S.No. -->
                                     <td>{{ (pagesize.offset - 1) * pagesize.limit + $index + 1 }}</td>
-
-                                    <!-- ✅ Image — only if exists, no fallback -->
-
-                                    <!-- Name -->
-                                    <td>{{ getFullName(item) }}</td>
-
-                                    <!-- Email -->
-                                    <td>{{ item?.email || 'NA' }}</td>
-
-                                    <!-- Phone -->
-                                    <td>{{ item?.phone || 'NA' }}</td>
-
-                                    <!-- Department -->
-                                    <td>{{ item?.department?.name || 'NA' }}</td>
-
-                                    <!-- Designation -->
-                                    <td>{{ item?.designation?.name || 'NA' }}</td>
-
-                                    <!-- Status -->
+                                    <td>{{ item?.name || 'NA' }}</td>
                                     <td>
                                         <span class="badge border rounded-lg! b-0 py-2 font-medium" [ngClass]="
                             item?.status ? 'bg-success text-white' : 'bg-danger text-white'
@@ -119,22 +103,15 @@
                                             {{ item?.status ? 'Active' : 'InActive' }}
                                         </span>
                                     </td>
-                                    <td class="pan-card-cell">
-                                        @if (item?.image) {
-                                        <img [src]="getImageUrl(item)" (error)="onImageError($event)" alt="PAN Card"
-                                            class="user-image" />
-                                        }
-                                    </td>
-                                    <!-- Action -->
                                     <td>
                                         <div class="d-flex align-items-center gap-2">
                                             <button type="button" class="btn btn-success btn-sm text-white"
-                                                (click)="onAdd(item)" title="Edit">
+                                                (click)="onAddRole(item)" title="Edit">
                                                 <i class="fa fa-pencil"></i>
                                             </button>
 
                                             <button type="button" class="btn btn-danger btn-sm text-white"
-                                                (click)="onDelete(item)" title="Delete">
+                                                (click)="onDeleteRole(item)" title="Delete">
                                                 <i class="fa fa-trash"></i>
                                             </button>
                                         </div>
@@ -147,8 +124,8 @@
                     </div>
                 </div>
 
-                @if (!isLoading && employeeVisitorList.length === 0) {
-                <div class="text-center py-4 text-gray-500">No Employee / Visitor Available</div>
+                @if (!isLoading && roleList.length === 0) {
+                <div class="text-center py-4 text-gray-500">No Role Available</div>
                 }
             </div>
         </div>
