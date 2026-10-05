@@ -22,24 +22,19 @@ export class DesignationList implements OnInit {
   private notification = inject(NotificationService);
   private ngZone = inject(NgZone);
   private cdr = inject(ChangeDetectorRef);
-
   bsModalRef!: BsModalRef;
-
-  // ==================== DATA ====================
   isLoading = false;
   searchKeyword = '';
 
-  allDesignations: any[] = [];        // Master data
-  designationList: any[] = [];        // Filtered for UI
+  allDesignations: any[] = [];
+  designationList: any[] = [];
   columns: any[] = [];
-
   pagesize = {
     limit: 25,
     offset: 1,
     count: 0,
   };
 
-  // ==================== PAGINATION HELPERS ====================
   get startValue(): number {
     return this.pagesize.count > 0
       ? (this.pagesize.offset - 1) * this.pagesize.limit + 1
@@ -53,7 +48,6 @@ export class DesignationList implements OnInit {
     );
   }
 
-  // ==================== LIFECYCLE ====================
   ngOnInit(): void {
     this.setInitialValue();
     this.getDesignationList();
@@ -68,18 +62,12 @@ export class DesignationList implements OnInit {
     ];
   }
 
-  // ==================== GET LIST ====================
   getDesignationList(): void {
     this.isLoading = true;
-
     this.designationService.designationList().subscribe((res: any) => {
-      console.log('Designation List Response:', res);
-
       this.ngZone.run(() => {
         this.isLoading = false;
-
         const body = res?.body ?? res;
-
         if (body?.success === true) {
           this.allDesignations = body?.data ?? [];
           this.applyFilterAndPagination();
@@ -91,38 +79,32 @@ export class DesignationList implements OnInit {
             body?.message || 'Failed to load designations'
           );
         }
-
         this.cdr.detectChanges();
       });
     });
   }
 
-  // ==================== FILTER + PAGINATION ====================
   private applyFilterAndPagination(): void {
     const keyword = this.searchKeyword.trim().toLowerCase();
     const filtered = keyword
       ? this.allDesignations.filter((item: any) =>
-          item?.name?.toLowerCase().includes(keyword)
-        )
+        item?.name?.toLowerCase().includes(keyword)
+      )
       : this.allDesignations;
-
     this.designationList = filtered;
     this.pagesize.count = filtered.length;
-
     const maxPage = Math.ceil(filtered.length / this.pagesize.limit) || 1;
     if (this.pagesize.offset > maxPage) {
       this.pagesize.offset = 1;
     }
   }
 
-  // ==================== ADD / EDIT ====================
   onAddDesignation(value: any): void {
     const initialState: ModalOptions = {
       initialState: {
         editData: value ? value : '',
       },
     };
-
     this.bsModalRef = this.modalService.show(
       CreateDesignation,
       Object.assign(initialState, {
@@ -137,11 +119,9 @@ export class DesignationList implements OnInit {
     });
   }
 
-  // ==================== DELETE (Confirmation Modal) ====================
   onDeleteDesignation(item: any): void {
     const payload = { id: item?.id };
     const url = this.designationService.deleteDesignation(payload);
-
     const initialState: ModalOptions = {
       initialState: {
         title: `Designation : ${item?.name}`,
@@ -162,7 +142,6 @@ export class DesignationList implements OnInit {
 
     this.bsModalRef?.content.mapdata.subscribe((value: any) => {
       const body = value?.body ?? value;
-
       if (value?.status === 200 || body?.success === true) {
         this.notification.success(
           body?.message || body?.actionResponse || 'Deleted successfully'
@@ -177,7 +156,6 @@ export class DesignationList implements OnInit {
     });
   }
 
-  // ==================== PAGINATION ====================
   onTablePageChange(event: number): void {
     this.pagesize.offset = event;
   }
@@ -192,7 +170,6 @@ export class DesignationList implements OnInit {
     this.applyFilterAndPagination();
   }
 
-  // ==================== SEARCH ====================
   onSearch(event: any): void {
     const searchValue = event.target.value.trim().replace(/\s+/g, ' ');
     this.searchKeyword = searchValue;

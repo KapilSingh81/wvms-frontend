@@ -40,8 +40,6 @@ export class CreateUser implements OnInit {
   tittle: string = 'Create';
   editData: any;
   isSubmitting = false;
-
-  // ==================== DROPDOWN OPTIONS ====================
   roleList: any[] = [];
   selectedRole: any = null;
 
@@ -57,10 +55,8 @@ export class CreateUser implements OnInit {
     inputDirection: 'ltr',
   };
 
-  // ✅ Image preview
   imagePreview: string | null = null;
   imageFile: File | null = null;
-
   StatusDropdown = [
     { value: true, text: 'Active' },
     { value: false, text: 'InActive' },
@@ -85,10 +81,8 @@ export class CreateUser implements OnInit {
       status: [true, [Validators.required]],
     });
 
-    // Edit mode
     if (this.editData) {
       this.tittle = 'Update';
-
       this.userForm.patchValue({
         first_name: this.editData?.first_name,
         last_name: this.editData?.last_name,
@@ -100,21 +94,14 @@ export class CreateUser implements OnInit {
         status: this.editData?.status,
       });
 
-      // Image preview
       if (this.editData?.image) {
-        const base = 'http://89.116.34.155:4000';
-        this.imagePreview = this.editData.image.startsWith('http')
-          ? this.editData.image
-          : `${base}/${this.editData.image.replace(/^\//, '')}`;
+        this.imagePreview = this.editData.image;
       }
-
-      // Password optional in edit mode
       this.userForm.get('password')?.clearValidators();
       this.userForm.get('password')?.updateValueAndValidity();
     }
   }
 
-  // ==================== LOAD DROPDOWNS ====================
   loadDropdowns(): void {
     this.roleService.roleList().subscribe((res: any) => {
       const body = res?.body ?? res;
@@ -131,13 +118,9 @@ export class CreateUser implements OnInit {
     });
   }
 
-  // ==================== DROPDOWN CHANGE HANDLERS ====================
   onSelectRole(event: any): void {
-    console.log('Role selected event:', event);
-
     const selected = event?.value ?? event;
     const control = this.userForm.get('role_id');
-
     if (selected && selected.id) {
       control?.setValue(selected.id);
       control?.markAsTouched();
@@ -145,11 +128,8 @@ export class CreateUser implements OnInit {
     } else {
       control?.setValue(null);
     }
-
-    console.log('Form value after role:', this.userForm.value);
   }
 
-  // ==================== IMAGE HANDLING ====================
   onFileSelected(event: any): void {
     const file = event.target?.files?.[0];
     if (!file) return;
@@ -160,7 +140,6 @@ export class CreateUser implements OnInit {
     }
 
     this.imageFile = file;
-
     const reader = new FileReader();
     reader.onload = () => {
       this.imagePreview = reader.result as string;
@@ -173,7 +152,6 @@ export class CreateUser implements OnInit {
     this.imagePreview = null;
   }
 
-  // ==================== SUBMIT ====================
   submit(): void {
     if (this.userForm.invalid) {
       this.userForm.markAllAsTouched();
@@ -181,8 +159,6 @@ export class CreateUser implements OnInit {
     }
 
     const formValue = this.userForm.value;
-
-    // ✅ FormData
     const formData = new FormData();
     formData.append('first_name', formValue.first_name);
     formData.append('last_name', formValue.last_name);
@@ -209,9 +185,7 @@ export class CreateUser implements OnInit {
     }
 
     this.isSubmitting = true;
-
     let req;
-
     if (this.editData?.id) {
       req = this.service.updateUser(this.editData.id, formData);
     } else {
@@ -219,11 +193,8 @@ export class CreateUser implements OnInit {
     }
 
     req.subscribe((res: any) => {
-      console.log('Save Response:', res);
       this.isSubmitting = false;
-
       const body = res?.body ?? res;
-
       if (body?.success === true || body?.code === 200 || body?.code === 201) {
         this.bsModalService.hide();
         this.mapdata.emit(body);

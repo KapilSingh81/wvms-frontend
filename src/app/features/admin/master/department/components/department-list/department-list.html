@@ -9,8 +9,6 @@
                     OF {{ pagesize.count > 0 ? pagesize.count : 0 }} Department
                 </span>
             </div>
-
-            <!-- ✅ Pagination Upar (header me) -->
             @if (pagesize.count && pagesize.count > 0) {
             <div class="row">
                 <div class="d-flex justify-content-center">
@@ -105,13 +103,11 @@
                                     </td>
                                     <td>
                                         <div class="d-flex align-items-center gap-2">
-                                            <!-- Edit Department -->
                                             <button type="button" class="btn btn-success btn-sm text-white"
                                                 (click)="onAddDepartment(item)" title="Edit">
                                                 <i class="fa fa-pencil"></i>
                                             </button>
 
-                                            <!-- Delete Department -->
                                             <button type="button" class="btn btn-danger btn-sm text-white"
                                                 (click)="onDeleteDepartment(item)" title="Delete">
                                                 <i class="fa fa-trash"></i>

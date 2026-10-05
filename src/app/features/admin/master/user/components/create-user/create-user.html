@@ -24,8 +24,7 @@
                 <!-- Last Name -->
                 <div class="col-md-4 mb-3">
                     <label class="form-label">Last Name <span class="text-danger">*</span></label>
-                    <input type="text" class="form-control" placeholder="Enter Last Name"
-                        formControlName="last_name" />
+                    <input type="text" class="form-control" placeholder="Enter Last Name" formControlName="last_name" />
                     @if (userForm.get('last_name')?.invalid &&
                     userForm.get('last_name')?.touched) {
                     <span class="text-danger">Last Name is required</span>
@@ -35,8 +34,7 @@
                 <!-- Email -->
                 <div class="col-md-4 mb-3">
                     <label class="form-label">Email <span class="text-danger">*</span></label>
-                    <input type="email" class="form-control" placeholder="Enter Email"
-                        formControlName="email" />
+                    <input type="email" class="form-control" placeholder="Enter Email" formControlName="email" />
                     @if (userForm.get('email')?.invalid &&
                     userForm.get('email')?.touched) {
                     <span class="text-danger">Valid Email is required</span>
@@ -57,8 +55,7 @@
                 <!-- Username -->
                 <div class="col-md-4 mb-3">
                     <label class="form-label">Username</label>
-                    <input type="text" class="form-control" placeholder="Enter Username"
-                        formControlName="username" />
+                    <input type="text" class="form-control" placeholder="Enter Username" formControlName="username" />
                 </div>
 
                 <!-- ✅ Role — ngx-select-dropdown -->
@@ -66,16 +63,12 @@
                     <label class="form-label">
                         Role <span class="text-danger">*</span>
                     </label>
-                    <ngx-select-dropdown
-                        [config]="roleConfig"
-                        [options]="roleList"
-                        [(ngModel)]="selectedRole"
-                        [ngModelOptions]="{ standalone: true }"
-                        (change)="onSelectRole($event)">
+                    <ngx-select-dropdown [config]="roleConfig" [options]="roleList" [(ngModel)]="selectedRole"
+                        [ngModelOptions]="{ standalone: true }" (change)="onSelectRole($event)">
                     </ngx-select-dropdown>
 
                     @if (userForm.get('role_id')?.invalid &&
-                         userForm.get('role_id')?.touched) {
+                    userForm.get('role_id')?.touched) {
                     <span class="text-danger">Role is required</span>
                     }
                 </div>
@@ -108,8 +101,7 @@
                 <!-- Address -->
                 <div class="col-md-6 mb-3">
                     <label class="form-label">Address</label>
-                    <textarea class="form-control" rows="2"
-                        placeholder="Enter Address"
+                    <textarea class="form-control" rows="2" placeholder="Enter Address"
                         formControlName="address"></textarea>
                 </div>
 
@@ -125,10 +117,10 @@
 
                         <span class="file-name">
                             @if (imageFile) {
-                                <i class="fa fa-file-image file-icon"></i>
-                                {{ imageFile.name }}
+                            <i class="fa fa-file-image file-icon"></i>
+                            {{ imageFile.name }}
                             } @else {
-                                <span class="no-file">No file chosen</span>
+                            <span class="no-file">No file chosen</span>
                             }
                         </span>
 
@@ -138,8 +130,7 @@
                         </button>
                         }
 
-                        <input id="imageInput" type="file" accept="image/*"
-                               (change)="onFileSelected($event)" hidden />
+                        <input id="imageInput" type="file" accept="image/*" (change)="onFileSelected($event)" hidden />
                     </div>
                 </div>
 

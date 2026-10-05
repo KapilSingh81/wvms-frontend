@@ -20,15 +20,13 @@ export class DepartmentList implements OnInit {
   private departmentService = inject(DepartmentService);
   private modalService = inject(BsModalService);
   private notification = inject(NotificationService);
-
   bsModalRef!: BsModalRef;
 
-  // ==================== DATA ====================
   isLoading = false;
   searchKeyword = '';
 
-  allDepartments: any[] = [];      // Master data
-  departmentList: any[] = [];      // UI filtered + paginated
+  allDepartments: any[] = [];
+  departmentList: any[] = [];
   columns: any[] = [];
 
   pagesize = {
@@ -37,7 +35,6 @@ export class DepartmentList implements OnInit {
     count: 0,
   };
 
-  // ==================== PAGINATION HELPERS ====================
   get startValue(): number {
     return this.pagesize.count > 0
       ? (this.pagesize.offset - 1) * this.pagesize.limit + 1
@@ -51,7 +48,6 @@ export class DepartmentList implements OnInit {
     );
   }
 
-  // ==================== LIFECYCLE ====================
   ngOnInit(): void {
     this.setInitialValue();
     this.getDepartmentList();
@@ -66,16 +62,12 @@ export class DepartmentList implements OnInit {
     ];
   }
 
-  // ==================== GET LIST ====================
   getDepartmentList(): void {
     this.isLoading = true;
-
     this.departmentService.departmentList().subscribe((res: any) => {
       console.log('Department List Response:', res);
       this.isLoading = false;
-
       const body = res?.body ?? res;
-
       if (body?.success === true) {
         this.allDepartments = body?.data ?? [];
         this.applyFilterAndPagination();
@@ -88,29 +80,23 @@ export class DepartmentList implements OnInit {
     });
   }
 
-  // ==================== FILTER + PAGINATION (Frontend) ====================
   private applyFilterAndPagination(): void {
     const keyword = this.searchKeyword.trim().toLowerCase();
     const filtered = keyword
       ? this.allDepartments.filter((item: any) =>
-          item?.name?.toLowerCase().includes(keyword)
-        )
+        item?.name?.toLowerCase().includes(keyword)
+      )
       : this.allDepartments;
-
     this.pagesize.count = filtered.length;
-
     const maxPage = Math.ceil(filtered.length / this.pagesize.limit) || 1;
     if (this.pagesize.offset > maxPage) {
       this.pagesize.offset = 1;
     }
-
     const start = (this.pagesize.offset - 1) * this.pagesize.limit;
     const end = start + this.pagesize.limit;
-
     this.departmentList = filtered.slice(start, end);
   }
 
-  // ==================== ADD / EDIT ====================
   onAddDepartment(value: any): void {
     const initialState: ModalOptions = {
       initialState: {
@@ -135,7 +121,6 @@ export class DepartmentList implements OnInit {
   onDeleteDepartment(item: any): void {
     const payload = { id: item?.id };
     const url = this.departmentService.deleteDepartment(payload);
-
     const initialState: ModalOptions = {
       initialState: {
         title: `Department : ${item?.name}`,
@@ -170,7 +155,6 @@ export class DepartmentList implements OnInit {
     });
   }
 
-  // ==================== PAGINATION ====================
   onTablePageChange(event: number): void {
     this.pagesize.offset = event;
     this.applyFilterAndPagination();
@@ -186,7 +170,6 @@ export class DepartmentList implements OnInit {
     this.applyFilterAndPagination();
   }
 
-  // ==================== SEARCH ====================
   onSearch(event: any): void {
     const searchValue = event.target.value.trim().replace(/\s+/g, ' ');
     this.searchKeyword = searchValue;

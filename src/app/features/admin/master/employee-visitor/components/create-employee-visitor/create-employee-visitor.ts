@@ -24,7 +24,7 @@ import { SelectDropDownModule } from 'ngx-select-dropdown';
 @Component({
   selector: 'app-create-employee-visitor',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule,SelectDropDownModule,FormsModule],
+  imports: [CommonModule, ReactiveFormsModule, SelectDropDownModule, FormsModule],
   templateUrl: './create-employee-visitor.html',
   styleUrl: './create-employee-visitor.scss',
 })
@@ -43,40 +43,25 @@ export class CreateEmployeeVisitor implements OnInit {
   editData: any;
   isSubmitting = false;
 
-  // ==================== DROPDOWN OPTIONS ====================
   departmentList: any[] = [];
   designationList: any[] = [];
-
-  // Selected values (ngx-select-dropdown)
   selectedDepartment: any = null;
   selectedDesignation: any = null;
 
-  // ==================== ngx-select-dropdown CONFIGS ====================
   departmentConfig = {
-    displayKey: 'name',       // ✅ "name" field use karo
+    displayKey: 'name',
     search: true,
     height: '250px',
     placeholder: 'Select Department',
-    limitTo: 50,
-    noResultsFound: 'No department found',
-    searchPlaceholder: 'Search department...',
-    clearOnSelection: false,
-    inputDirection: 'ltr',
   };
 
   designationConfig = {
-    displayKey: 'name',       // ✅ "name" field use karo
+    displayKey: 'name',
     search: true,
     height: '250px',
     placeholder: 'Select Designation',
-    limitTo: 50,
-    noResultsFound: 'No designation found',
-    searchPlaceholder: 'Search designation...',
-    clearOnSelection: false,
-    inputDirection: 'ltr',
   };
 
-  // ✅ Image preview
   imagePreview: string | null = null;
   imageFile: File | null = null;
 
@@ -91,7 +76,6 @@ export class CreateEmployeeVisitor implements OnInit {
     { value: false, text: 'InActive' },
   ];
 
-  // ==================== LIFECYCLE ====================
   ngOnInit(): void {
     this.setInitialForm();
     this.loadDropdowns();
@@ -113,10 +97,8 @@ export class CreateEmployeeVisitor implements OnInit {
       about: [''],
     });
 
-    // Edit mode
     if (this.editData) {
       this.tittle = 'Update';
-
       this.empVisitorForm.patchValue({
         first_name: this.editData?.first_name,
         last_name: this.editData?.last_name,
@@ -130,15 +112,10 @@ export class CreateEmployeeVisitor implements OnInit {
         about: this.editData?.about,
       });
 
-      // Image preview
       if (this.editData?.image) {
-        const base = 'http://89.116.34.155:4000';
-        this.imagePreview = this.editData.image.startsWith('http')
-          ? this.editData.image
-          : `${base}/${this.editData.image.replace(/^\//, '')}`;
+        this.imagePreview = this.editData.image;
       }
 
-      // Password optional in edit mode
       this.empVisitorForm.get('password')?.clearValidators();
       this.empVisitorForm.get('confirm_password')?.clearValidators();
       this.empVisitorForm.get('password')?.updateValueAndValidity();
@@ -146,15 +123,11 @@ export class CreateEmployeeVisitor implements OnInit {
     }
   }
 
-  // ==================== LOAD DROPDOWNS ====================
   loadDropdowns(): void {
-    // Department
     this.departmentService.departmentList().subscribe((res: any) => {
       const body = res?.body ?? res;
       if (body?.success === true) {
         this.departmentList = body?.data ?? [];
-
-        // ✅ Edit mode: pre-select department
         if (this.editData?.department_id) {
           this.selectedDepartment = this.departmentList.find(
             (d: any) => d.id === this.editData.department_id
@@ -163,13 +136,10 @@ export class CreateEmployeeVisitor implements OnInit {
       }
     });
 
-    // Designation
     this.designationService.designationList().subscribe((res: any) => {
       const body = res?.body ?? res;
       if (body?.success === true) {
         this.designationList = body?.data ?? [];
-
-        // ✅ Edit mode: pre-select designation
         if (this.editData?.designation_id) {
           this.selectedDesignation = this.designationList.find(
             (d: any) => d.id === this.editData.designation_id
@@ -179,57 +149,38 @@ export class CreateEmployeeVisitor implements OnInit {
     });
   }
 
-// ==================== DROPDOWN CHANGE HANDLERS ====================
-onSelectDepartment(event: any): void {
-  console.log('Department selected event:', event);
-
-  // ✅ ngx-select-dropdown wraps in { value: {...} }
-  const selected = event?.value ?? event;
-
-  const control = this.empVisitorForm.get('department_id');
-
-  if (selected && selected.id) {
-    control?.setValue(selected.id);
-    control?.markAsTouched();
-    control?.updateValueAndValidity();
-  } else {
-    control?.setValue(null);
+  onSelectDepartment(event: any): void {
+    const selected = event?.value ?? event;
+    const control = this.empVisitorForm.get('department_id');
+    if (selected && selected.id) {
+      control?.setValue(selected.id);
+      control?.markAsTouched();
+      control?.updateValueAndValidity();
+    } else {
+      control?.setValue(null);
+    }
   }
 
-  console.log('Form value after department:', this.empVisitorForm.value);
-}
-
-onSelectDesignation(event: any): void {
-  console.log('Designation selected event:', event);
-
-  // ✅ ngx-select-dropdown wraps in { value: {...} }
-  const selected = event?.value ?? event;
-
-  const control = this.empVisitorForm.get('designation_id');
-
-  if (selected && selected.id) {
-    control?.setValue(selected.id);
-    control?.markAsTouched();
-    control?.updateValueAndValidity();
-  } else {
-    control?.setValue(null);
+  onSelectDesignation(event: any): void {
+    const selected = event?.value ?? event;
+    const control = this.empVisitorForm.get('designation_id');
+    if (selected && selected.id) {
+      control?.setValue(selected.id);
+      control?.markAsTouched();
+      control?.updateValueAndValidity();
+    } else {
+      control?.setValue(null);
+    }
   }
 
-  console.log('Form value after designation:', this.empVisitorForm.value);
-}
-
-  // ==================== IMAGE HANDLING ====================
   onFileSelected(event: any): void {
     const file = event.target?.files?.[0];
     if (!file) return;
-
     if (file.size > 5 * 1024 * 1024) {
       this.notification.error('Image size must be less than 5MB');
       return;
     }
-
     this.imageFile = file;
-
     const reader = new FileReader();
     reader.onload = () => {
       this.imagePreview = reader.result as string;
@@ -242,9 +193,8 @@ onSelectDesignation(event: any): void {
     this.imagePreview = null;
   }
 
-  // ==================== SUBMIT ====================
   submit(): void {
-        if (this.empVisitorForm.invalid) {
+    if (this.empVisitorForm.invalid) {
       this.empVisitorForm.markAllAsTouched();
       return;
     }
@@ -260,10 +210,7 @@ onSelectDesignation(event: any): void {
       this.empVisitorForm.markAllAsTouched();
       return;
     }
-
     const formValue = this.empVisitorForm.value;
-
-    // ✅ FormData
     const formData = new FormData();
     formData.append('first_name', formValue.first_name);
     formData.append('last_name', formValue.last_name);
@@ -299,11 +246,8 @@ onSelectDesignation(event: any): void {
     }
 
     req.subscribe((res: any) => {
-      console.log('Save Response:', res);
       this.isSubmitting = false;
-
       const body = res?.body ?? res;
-
       if (body?.success === true || body?.code === 200) {
         this.bsModalService.hide();
         this.mapdata.emit(body);

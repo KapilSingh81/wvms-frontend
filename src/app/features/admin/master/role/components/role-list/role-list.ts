@@ -27,8 +27,8 @@ export class RoleList implements OnInit {
   isLoading = false;
   searchKeyword = '';
 
-  allRoles: any[] = [];      // Master data
-  roleList: any[] = [];      // UI filtered + paginated
+  allRoles: any[] = [];   
+  roleList: any[] = [];  
   columns: any[] = [];
 
   pagesize = {
@@ -37,7 +37,6 @@ export class RoleList implements OnInit {
     count: 0,
   };
 
-  // ==================== PAGINATION HELPERS ====================
   get startValue(): number {
     return this.pagesize.count > 0
       ? (this.pagesize.offset - 1) * this.pagesize.limit + 1
@@ -51,7 +50,6 @@ export class RoleList implements OnInit {
     );
   }
 
-  // ==================== LIFECYCLE ====================
   ngOnInit(): void {
     this.setInitialValue();
     this.getRoleList();
@@ -66,16 +64,11 @@ export class RoleList implements OnInit {
     ];
   }
 
-  // ==================== GET LIST ====================
   getRoleList(): void {
     this.isLoading = true;
-
     this.roleService.roleList().subscribe((res: any) => {
-      console.log('Role List Response:', res);
       this.isLoading = false;
-
       const body = res?.body ?? res;
-
       if (body?.success === true) {
         this.allRoles = body?.data ?? [];
         this.applyFilterAndPagination();
@@ -88,7 +81,6 @@ export class RoleList implements OnInit {
     });
   }
 
-  // ==================== FILTER + PAGINATION (Frontend) ====================
   private applyFilterAndPagination(): void {
     const keyword = this.searchKeyword.trim().toLowerCase();
     const filtered = keyword
@@ -98,19 +90,15 @@ export class RoleList implements OnInit {
       : this.allRoles;
 
     this.pagesize.count = filtered.length;
-
     const maxPage = Math.ceil(filtered.length / this.pagesize.limit) || 1;
     if (this.pagesize.offset > maxPage) {
       this.pagesize.offset = 1;
     }
-
     const start = (this.pagesize.offset - 1) * this.pagesize.limit;
     const end = start + this.pagesize.limit;
-
     this.roleList = filtered.slice(start, end);
   }
 
-  // ==================== ADD / EDIT ====================
   onAddRole(value: any): void {
     const initialState: ModalOptions = {
       initialState: {
@@ -135,7 +123,6 @@ export class RoleList implements OnInit {
   onDeleteRole(item: any): void {
     const payload = { id: item?.id };
     const url = this.roleService.deleteRole(payload);
-
     const initialState: ModalOptions = {
       initialState: {
         title: `Role : ${item?.name}`,
@@ -170,7 +157,6 @@ export class RoleList implements OnInit {
     });
   }
 
-  // ==================== PAGINATION ====================
   onTablePageChange(event: number): void {
     this.pagesize.offset = event;
     this.applyFilterAndPagination();
@@ -186,7 +172,6 @@ export class RoleList implements OnInit {
     this.applyFilterAndPagination();
   }
 
-  // ==================== SEARCH ====================
   onSearch(event: any): void {
     const searchValue = event.target.value.trim().replace(/\s+/g, ' ');
     this.searchKeyword = searchValue;

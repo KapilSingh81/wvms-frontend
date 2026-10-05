@@ -9,15 +9,12 @@
     <form [formGroup]="designationForm" (ngSubmit)="submit()">
         <div class="_card white-bg">
             <div class="row">
-
-                <!-- Designation Name -->
                 <div class="col-md-12 mb-3">
                     <label class="form-label">
                         Designation Name <span class="text-danger">*</span>
                     </label>
                     <input type="text" class="form-control" placeholder="Enter Designation Name"
                         formControlName="name" />
-
                     @if (designationForm.get('name')?.invalid &&
                     (designationForm.get('name')?.dirty ||
                     designationForm.get('name')?.touched)) {
@@ -25,7 +22,6 @@
                     }
                 </div>
 
-                <!-- Status -->
                 <div class="col-md-12 mb-3">
                     <label class="form-label">
                         Status <span class="text-danger">*</span>

@@ -28,10 +28,8 @@ export class UserList implements OnInit {
 
   imageBaseUrl = enviornment.baseUrl;
 
-  // ==================== DATA ====================
   isLoading = false;
   searchKeyword = '';
-
   allUsers: any[] = [];
   userList: any[] = [];
   columns: any[] = [];
@@ -42,7 +40,6 @@ export class UserList implements OnInit {
     count: 0,
   };
 
-  // ==================== PAGINATION HELPERS ====================
   get startValue(): number {
     return this.pagesize.count > 0
       ? (this.pagesize.offset - 1) * this.pagesize.limit + 1
@@ -56,7 +53,6 @@ export class UserList implements OnInit {
     );
   }
 
-  // ==================== LIFECYCLE ====================
   ngOnInit(): void {
     this.setInitialValue();
     this.getList();
@@ -76,18 +72,12 @@ export class UserList implements OnInit {
     ];
   }
 
-  // ==================== GET LIST ====================
   getList(): void {
     this.isLoading = true;
-
     this.service.userList().subscribe((res: any) => {
-      console.log('User List Response:', res);
-
       this.ngZone.run(() => {
         this.isLoading = false;
-
         const body = res?.body ?? res;
-
         if (body?.success === true) {
           this.allUsers = body?.data ?? [];
           this.applyFilterAndPagination();
@@ -97,16 +87,13 @@ export class UserList implements OnInit {
           this.pagesize.count = 0;
           this.notification.error(body?.message || 'Failed to load users');
         }
-
         this.cdr.detectChanges();
       });
     });
   }
 
-  // ==================== FILTER + PAGINATION ====================
   private applyFilterAndPagination(): void {
     const keyword = this.searchKeyword.trim().toLowerCase();
-
     const filtered = keyword
       ? this.allUsers.filter((item: any) => {
           const fullName =
@@ -123,14 +110,12 @@ export class UserList implements OnInit {
 
     this.userList = filtered;
     this.pagesize.count = filtered.length;
-
     const maxPage = Math.ceil(filtered.length / this.pagesize.limit) || 1;
     if (this.pagesize.offset > maxPage) {
       this.pagesize.offset = 1;
     }
   }
 
-  // ==================== ADD / EDIT ====================
   onAdd(value: any): void {
     const initialState: ModalOptions = {
       initialState: {
@@ -152,13 +137,10 @@ export class UserList implements OnInit {
     });
   }
 
-  // ==================== DELETE ====================
   onDelete(item: any): void {
     const payload = { id: item?.id };
     const url = this.service.deleteUser(payload);
-
-    const fullName =
-      `${item?.first_name || ''} ${item?.last_name || ''}`.trim() || 'User';
+    const fullName = `${item?.first_name || ''} ${item?.last_name || ''}`.trim() || 'User';
 
     const initialState: ModalOptions = {
       initialState: {
@@ -180,7 +162,6 @@ export class UserList implements OnInit {
 
     this.bsModalRef?.content.mapdata.subscribe((value: any) => {
       const body = value?.body ?? value;
-
       if (value?.status === 200 || body?.success === true) {
         this.notification.success(
           body?.message || body?.actionResponse || 'Deleted successfully'
@@ -195,7 +176,6 @@ export class UserList implements OnInit {
     });
   }
 
-  // ==================== PAGINATION ====================
   onTablePageChange(event: number): void {
     this.pagesize.offset = event;
   }
@@ -210,7 +190,6 @@ export class UserList implements OnInit {
     this.applyFilterAndPagination();
   }
 
-  // ==================== SEARCH ====================
   onSearch(event: any): void {
     const searchValue = event.target.value.trim().replace(/\s+/g, ' ');
     this.searchKeyword = searchValue;
@@ -224,7 +203,6 @@ export class UserList implements OnInit {
     this.applyFilterAndPagination();
   }
 
-  // ==================== HELPERS ====================
   getFullName(item: any): string {
     const fn = item?.first_name || '';
     const ln = item?.last_name || '';

@@ -41,20 +41,14 @@ export class CreateVisitor implements OnInit {
   editData: any;
   isSubmitting = false;
 
-  // ==================== DROPDOWNS ====================
   employeeList: any[] = [];
   selectedEmployee: any = null;
-
   employeeConfig = {
-    displayKey: 'full_name',   // 👈 we'll add a display field while mapping
+    displayKey: 'full_name',
     search: true,
     height: '250px',
     placeholder: 'Select Employee',
-    limitTo: 50,
-    noResultsFound: 'No employee found',
-    searchPlaceholder: 'Search employee...',
-    clearOnSelection: false,
-    inputDirection: 'ltr',
+
   };
 
   GenderDropdown = [
@@ -63,11 +57,9 @@ export class CreateVisitor implements OnInit {
     { value: 'Other', text: 'Other' },
   ];
 
-  // ✅ Image preview
   imagePreview: string | null = null;
   imageFile: File | null = null;
 
-  // ==================== LIFECYCLE ====================
   ngOnInit(): void {
     this.setInitialForm();
     this.loadEmployees();
@@ -82,7 +74,6 @@ export class CreateVisitor implements OnInit {
         '',
         [
           Validators.required,
-          // ✅ Digits only, with country code, without '+'
           Validators.pattern(/^[0-9]{7,15}$/),
         ],
       ],
@@ -95,10 +86,8 @@ export class CreateVisitor implements OnInit {
       previous_visitor_id: [null],
     });
 
-    // Edit mode
     if (this.editData) {
       this.tittle = 'Update';
-
       this.visitorForm.patchValue({
         first_name: this.editData?.first_name,
         last_name: this.editData?.last_name,
@@ -112,25 +101,17 @@ export class CreateVisitor implements OnInit {
         address: this.editData?.address,
       });
 
-      // Image preview
       if (this.editData?.image) {
-        const base = 'http://89.116.34.155:4000';
-        this.imagePreview = this.editData.image.startsWith('http')
-          ? this.editData.image
-          : `${base}/${this.editData.image.replace(/^\//, '')}`;
+        this.imagePreview = this.editData.image;
       }
     }
   }
 
-  // ==================== LOAD EMPLOYEES ====================
   loadEmployees(): void {
     this.employeeService.employeeVisitorList().subscribe((res: any) => {
       const body = res?.body ?? res;
-
       if (body?.success === true) {
         const rawList = body?.data ?? [];
-
-        // ✅ add full_name for dropdown display
         this.employeeList = rawList.map((emp: any) => ({
           ...emp,
           full_name:
@@ -139,7 +120,6 @@ export class CreateVisitor implements OnInit {
             'NA',
         }));
 
-        // ✅ Edit mode: pre-select employee
         if (this.editData?.employee_id) {
           this.selectedEmployee = this.employeeList.find(
             (e: any) => e.id === this.editData.employee_id
@@ -149,11 +129,9 @@ export class CreateVisitor implements OnInit {
     });
   }
 
-  // ==================== DROPDOWN CHANGE ====================
   onSelectEmployee(event: any): void {
     const selected = event?.value ?? event;
     const control = this.visitorForm.get('employee_id');
-
     if (selected && selected.id) {
       control?.setValue(selected.id);
       control?.markAsTouched();
@@ -163,18 +141,15 @@ export class CreateVisitor implements OnInit {
     }
   }
 
-  // ==================== IMAGE HANDLING ====================
   onFileSelected(event: any): void {
     const file = event.target?.files?.[0];
     if (!file) return;
-
     if (file.size > 5 * 1024 * 1024) {
       this.notification.error('Image size must be less than 5MB');
       return;
     }
 
     this.imageFile = file;
-
     const reader = new FileReader();
     reader.onload = () => {
       this.imagePreview = reader.result as string;
@@ -187,7 +162,6 @@ export class CreateVisitor implements OnInit {
     this.imagePreview = null;
   }
 
-  // ==================== SUBMIT ====================
   submit(): void {
     if (this.visitorForm.invalid) {
       this.visitorForm.markAllAsTouched();
@@ -195,8 +169,6 @@ export class CreateVisitor implements OnInit {
     }
 
     const formValue = this.visitorForm.value;
-
-    // ✅ FormData
     const formData = new FormData();
     formData.append('first_name', formValue.first_name);
     formData.append('last_name', formValue.last_name);

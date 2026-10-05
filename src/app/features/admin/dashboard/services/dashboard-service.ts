@@ -10,12 +10,6 @@ import { HttpService } from '../../../shared/services/http.services.ts/http.serv
 export class DashboardService {
   private apiService = inject(HttpService);
 
-  /**
-   * Get dashboard summary + visitor list
-   * @param fromDate — YYYY-MM-DDTHH:mm
-   * @param toDate   — YYYY-MM-DDTHH:mm
-   * @param type     — 'total' | 'checked_in' | 'checked_out' | 'still_inside'
-   */
   getDashboardData(fromDate: string, toDate: string, type: string): Observable<any> {
     const url = API_CONSTANT.dashboardData
       .replace('{fromDate}', encodeURIComponent(fromDate))

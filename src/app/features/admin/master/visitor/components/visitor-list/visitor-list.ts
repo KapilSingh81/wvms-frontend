@@ -25,24 +25,18 @@ export class VisitorList implements OnInit {
   private cdr = inject(ChangeDetectorRef);
 
   bsModalRef!: BsModalRef;
-
   imageBaseUrl = enviornment.baseUrl;
-
-  // ==================== DATA ====================
   isLoading = false;
   searchKeyword = '';
-
   allVisitors: any[] = [];
   visitorList: any[] = [];
   columns: any[] = [];
-
   pagesize = {
     limit: 25,
     offset: 1,
     count: 0,
   };
 
-  // ==================== PAGINATION HELPERS ====================
   get startValue(): number {
     return this.pagesize.count > 0
       ? (this.pagesize.offset - 1) * this.pagesize.limit + 1
@@ -56,7 +50,6 @@ export class VisitorList implements OnInit {
     );
   }
 
-  // ==================== LIFECYCLE ====================
   ngOnInit(): void {
     this.setInitialValue();
     this.getList();
@@ -78,18 +71,12 @@ export class VisitorList implements OnInit {
     ];
   }
 
-  // ==================== GET LIST ====================
   getList(): void {
     this.isLoading = true;
-
     this.service.visitorList().subscribe((res: any) => {
-      console.log('Visitor List Response:', res);
-
       this.ngZone.run(() => {
         this.isLoading = false;
-
         const body = res?.body ?? res;
-
         if (body?.success === true) {
           this.allVisitors = body?.data ?? [];
           this.applyFilterAndPagination();
@@ -99,16 +86,13 @@ export class VisitorList implements OnInit {
           this.pagesize.count = 0;
           this.notification.error(body?.message || 'Failed to load visitors');
         }
-
         this.cdr.detectChanges();
       });
     });
   }
 
-  // ==================== FILTER + PAGINATION ====================
   private applyFilterAndPagination(): void {
     const keyword = this.searchKeyword.trim().toLowerCase();
-
     const filtered = keyword
       ? this.allVisitors.filter((item: any) => {
           const fullName =
@@ -123,7 +107,6 @@ export class VisitorList implements OnInit {
           );
         })
       : this.allVisitors;
-
     this.visitorList = filtered;
     this.pagesize.count = filtered.length;
 
@@ -133,7 +116,6 @@ export class VisitorList implements OnInit {
     }
   }
 
-  // ==================== ADD / EDIT ====================
   onAdd(value: any): void {
     const initialState: ModalOptions = {
       initialState: {
@@ -155,13 +137,10 @@ export class VisitorList implements OnInit {
     });
   }
 
-  // ==================== CHECKOUT ====================
   onCheckout(item: any): void {
     const payload = { id: item?.id };
     const url = this.service.checkoutVisitor(payload);
-
-    const fullName =
-      `${item?.first_name || ''} ${item?.last_name || ''}`.trim() || 'Visitor';
+    const fullName = `${item?.first_name || ''} ${item?.last_name || ''}`.trim() || 'Visitor';
 
     const initialState: ModalOptions = {
       initialState: {
@@ -183,7 +162,6 @@ export class VisitorList implements OnInit {
 
     this.bsModalRef?.content.mapdata.subscribe((value: any) => {
       const body = value?.body ?? value;
-
       if (value?.status === 200 || body?.success === true) {
         this.notification.success(
           body?.message || body?.actionResponse || 'Checked out successfully'
@@ -198,13 +176,10 @@ export class VisitorList implements OnInit {
     });
   }
 
-  // ==================== DELETE ====================
   onDelete(item: any): void {
     const payload = { id: item?.id };
     const url = this.service.deleteVisitor(payload);
-
-    const fullName =
-      `${item?.first_name || ''} ${item?.last_name || ''}`.trim() || 'Visitor';
+    const fullName = `${item?.first_name || ''} ${item?.last_name || ''}`.trim() || 'Visitor';
 
     const initialState: ModalOptions = {
       initialState: {
@@ -226,7 +201,6 @@ export class VisitorList implements OnInit {
 
     this.bsModalRef?.content.mapdata.subscribe((value: any) => {
       const body = value?.body ?? value;
-
       if (value?.status === 200 || body?.success === true) {
         this.notification.success(
           body?.message || body?.actionResponse || 'Deleted successfully'
@@ -241,7 +215,6 @@ export class VisitorList implements OnInit {
     });
   }
 
-  // ==================== PAGINATION ====================
   onTablePageChange(event: number): void {
     this.pagesize.offset = event;
   }
@@ -256,7 +229,6 @@ export class VisitorList implements OnInit {
     this.applyFilterAndPagination();
   }
 
-  // ==================== SEARCH ====================
   onSearch(event: any): void {
     const searchValue = event.target.value.trim().replace(/\s+/g, ' ');
     this.searchKeyword = searchValue;
@@ -270,7 +242,6 @@ export class VisitorList implements OnInit {
     this.applyFilterAndPagination();
   }
 
-  // ==================== HELPERS ====================
   getFullName(item: any): string {
     const fn = item?.first_name || '';
     const ln = item?.last_name || '';
@@ -293,7 +264,6 @@ export class VisitorList implements OnInit {
     event.target.style.display = 'none';
   }
 
-  // ✅ Show check-out button only if not yet checked out
   canCheckout(item: any): boolean {
     return !item?.checkout_time && !item?.check_out_time && item?.status !== 'checked_out';
   }

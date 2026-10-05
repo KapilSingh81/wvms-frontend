@@ -7,7 +7,6 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { BsModalService } from 'ngx-bootstrap/modal';
-
 import { NotificationService } from '../../../../../shared/services/notification-service/notificaiton';
 import { DesignationService } from '../../services/designation-service';
 
@@ -36,7 +35,6 @@ export class CreateDesignation implements OnInit {
     { value: false, text: 'InActive' },
   ];
 
-  // ==================== LIFECYCLE ====================
   ngOnInit(): void {
     this.setInitialForm();
   }
@@ -47,7 +45,6 @@ export class CreateDesignation implements OnInit {
       status: [true, [Validators.required]],
     });
 
-    // Edit mode
     if (this.editData) {
       this.tittle = 'Update';
       this.designationForm.patchValue({
@@ -57,40 +54,28 @@ export class CreateDesignation implements OnInit {
     }
   }
 
-  // ==================== SUBMIT ====================
   submit(): void {
     if (this.designationForm.invalid) {
       this.designationForm.markAllAsTouched();
       return;
     }
-
     const formValue = this.designationForm.value;
-
-    // ✅ Payload — जैसा backend expect कर रहा है
     const payload: any = {
       name: formValue?.name,
       status: formValue?.status,
     };
 
     let service;
-
     if (this.editData?.id) {
-      // Update
       payload.id = this.editData.id;
       service = this.designationService.updateDesignation(payload);
     } else {
-      // Create
       service = this.designationService.createDesignation(payload);
     }
-
     this.isSubmitting = true;
-
     service.subscribe((res: any) => {
-      console.log('Save Response:', res);
       this.isSubmitting = false;
-
       const body = res?.body ?? res;
-
       if (body?.success === true || body?.code === 200) {
         this.bsModalService.hide();
         this.mapdata.emit(body);

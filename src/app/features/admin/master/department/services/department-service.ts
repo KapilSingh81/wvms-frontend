@@ -11,7 +11,6 @@ import { HttpService } from '../../../../shared/services/http.services.ts/http.s
 export class DepartmentService {
   private apiService = inject(HttpService);
 
-  // ==================== LIST ====================
   departmentList(): Observable<any> {
     const url = API_CONSTANT.departmentList
     return this.apiService.get(url).pipe(
@@ -19,7 +18,6 @@ export class DepartmentService {
     );
   }
 
-  // ==================== CREATE ====================
   createDepartment(payload: any): Observable<any> {
     const url = API_CONSTANT.createDepartment;
     return this.apiService.post(url, payload).pipe(
@@ -27,7 +25,6 @@ export class DepartmentService {
     );
   }
 
-  // ==================== UPDATE ====================
   updateDepartment(payload: any): Observable<any> {
     const url = API_CONSTANT.updateDepartment.replace('{id}', payload.id);
     return this.apiService.put(url, payload).pipe(
@@ -35,7 +32,6 @@ export class DepartmentService {
     );
   }
 
-  // ==================== DELETE ====================
   deleteDepartment(payload: any): Observable<any> {
     const url = API_CONSTANT.deleteDepartment.replace('{id}', payload.id);
     return this.apiService.delete(url).pipe(

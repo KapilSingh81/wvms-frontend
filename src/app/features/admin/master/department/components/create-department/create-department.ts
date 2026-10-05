@@ -36,7 +36,6 @@ export class CreateDepartment implements OnInit {
     { value: false, text: 'InActive' },
   ];
 
-  // ==================== LIFECYCLE ====================
   ngOnInit(): void {
     this.setInitialForm();
   }
@@ -47,7 +46,6 @@ export class CreateDepartment implements OnInit {
       status: [true, [Validators.required]],
     });
 
-    // Edit mode
     if (this.editData) {
       this.tittle = 'Update';
       this.departmentForm.patchValue({
@@ -57,29 +55,22 @@ export class CreateDepartment implements OnInit {
     }
   }
 
-  // ==================== SUBMIT ====================
   submit(): void {
     if (this.departmentForm.invalid) {
       this.departmentForm.markAllAsTouched();
       return;
     }
-
     const formValue = this.departmentForm.value;
-
-    // ✅ Payload — जैसा backend expect कर रहा है
     const payload: any = {
       name: formValue?.name,
       status: formValue?.status,
     };
 
     let service;
-
     if (this.editData?.id) {
-      // Update
       payload.id = this.editData.id;
       service = this.departmentService.updateDepartment(payload);
     } else {
-      // Create
       service = this.departmentService.createDepartment(payload);
     }
 
@@ -88,9 +79,7 @@ export class CreateDepartment implements OnInit {
     service.subscribe((res: any) => {
       console.log('Save Response:', res);
       this.isSubmitting = false;
-
       const body = res?.body ?? res;
-
       if (body?.success === true || body?.code === 200) {
         this.bsModalService.hide();
         this.mapdata.emit(body);
@@ -105,7 +94,6 @@ export class CreateDepartment implements OnInit {
     });
   }
 
-  // ==================== CANCEL ====================
   cancel(): void {
     this.bsModalService.hide();
   }

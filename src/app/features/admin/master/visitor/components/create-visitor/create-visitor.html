@@ -24,8 +24,7 @@
                 <!-- Last Name -->
                 <div class="col-md-4 mb-3">
                     <label class="form-label">Last Name <span class="text-danger">*</span></label>
-                    <input type="text" class="form-control" placeholder="Enter Last Name"
-                        formControlName="last_name" />
+                    <input type="text" class="form-control" placeholder="Enter Last Name" formControlName="last_name" />
                     @if (visitorForm.get('last_name')?.invalid &&
                     visitorForm.get('last_name')?.touched) {
                     <span class="text-danger">Last Name is required</span>
@@ -35,8 +34,7 @@
                 <!-- Email (optional) -->
                 <div class="col-md-4 mb-3">
                     <label class="form-label">Email</label>
-                    <input type="email" class="form-control" placeholder="Enter Email"
-                        formControlName="email" />
+                    <input type="email" class="form-control" placeholder="Enter Email" formControlName="email" />
                     @if (visitorForm.get('email')?.invalid &&
                     visitorForm.get('email')?.touched) {
                     <span class="text-danger">Valid Email is required</span>
@@ -48,8 +46,7 @@
                     <label class="form-label">
                         Phone <span class="text-danger">*</span>
                     </label>
-                    <input type="text" class="form-control"
-                        placeholder="Digits only, with country code (no +)"
+                    <input type="text" class="form-control" placeholder="Digits only, with country code (no +)"
                         formControlName="phone" />
                     @if (visitorForm.get('phone')?.invalid &&
                     visitorForm.get('phone')?.touched) {
@@ -85,21 +82,17 @@
                         formControlName="company_name" />
                 </div>
 
-                <!-- ✅ Employee being visited — ngx-select-dropdown -->
                 <div class="col-md-4 mb-3">
                     <label class="form-label">
                         Employee to Visit <span class="text-danger">*</span>
                     </label>
-                    <ngx-select-dropdown
-                        [config]="employeeConfig"
-                        [options]="employeeList"
-                        [(ngModel)]="selectedEmployee"
-                        [ngModelOptions]="{ standalone: true }"
+                    <ngx-select-dropdown [config]="employeeConfig" [options]="employeeList"
+                        [(ngModel)]="selectedEmployee" [ngModelOptions]="{ standalone: true }"
                         (change)="onSelectEmployee($event)">
                     </ngx-select-dropdown>
 
                     @if (visitorForm.get('employee_id')?.invalid &&
-                         visitorForm.get('employee_id')?.touched) {
+                    visitorForm.get('employee_id')?.touched) {
                     <span class="text-danger">Employee is required</span>
                     }
                 </div>
@@ -107,8 +100,7 @@
                 <!-- Purpose -->
                 <div class="col-md-4 mb-3">
                     <label class="form-label">Purpose <span class="text-danger">*</span></label>
-                    <input type="text" class="form-control" placeholder="Enter Purpose"
-                        formControlName="purpose" />
+                    <input type="text" class="form-control" placeholder="Enter Purpose" formControlName="purpose" />
                     @if (visitorForm.get('purpose')?.invalid &&
                     visitorForm.get('purpose')?.touched) {
                     <span class="text-danger">Purpose is required</span>
@@ -118,8 +110,7 @@
                 <!-- Address (optional) -->
                 <div class="col-md-6 mb-3">
                     <label class="form-label">Address</label>
-                    <textarea class="form-control" rows="2"
-                        placeholder="Enter Address"
+                    <textarea class="form-control" rows="2" placeholder="Enter Address"
                         formControlName="address"></textarea>
                 </div>
 
@@ -135,22 +126,21 @@
 
                         <span class="file-name">
                             @if (imageFile) {
-                                <i class="fa fa-file-image file-icon"></i>
-                                {{ imageFile.name }}
+                            <i class="fa fa-file-image file-icon"></i>
+                            {{ imageFile.name }}
                             } @else {
-                                <span class="no-file">No file chosen</span>
+                            <span class="no-file">No file chosen</span>
                             }
                         </span>
 
                         @if (imageFile) {
-                        <button type="button" class="file-clear-btn"
-                                (click)="removeImage()" title="Remove">
+                        <button type="button" class="file-clear-btn" (click)="removeImage()" title="Remove">
                             <i class="fa fa-times"></i>
                         </button>
                         }
 
-                        <input id="visitorImageInput" type="file" accept="image/*"
-                               (change)="onFileSelected($event)" hidden />
+                        <input id="visitorImageInput" type="file" accept="image/*" (change)="onFileSelected($event)"
+                            hidden />
                     </div>
                 </div>
 

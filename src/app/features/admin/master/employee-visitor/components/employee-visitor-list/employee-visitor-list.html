@@ -91,27 +91,12 @@
                                 track $index
                                 ) {
                                 <tr>
-                                    <!-- S.No. -->
                                     <td>{{ (pagesize.offset - 1) * pagesize.limit + $index + 1 }}</td>
-
-                                    <!-- ✅ Image — only if exists, no fallback -->
-
-                                    <!-- Name -->
                                     <td>{{ getFullName(item) }}</td>
-
-                                    <!-- Email -->
                                     <td>{{ item?.email || 'NA' }}</td>
-
-                                    <!-- Phone -->
                                     <td>{{ item?.phone || 'NA' }}</td>
-
-                                    <!-- Department -->
                                     <td>{{ item?.department?.name || 'NA' }}</td>
-
-                                    <!-- Designation -->
                                     <td>{{ item?.designation?.name || 'NA' }}</td>
-
-                                    <!-- Status -->
                                     <td>
                                         <span class="badge border rounded-lg! b-0 py-2 font-medium" [ngClass]="
                             item?.status ? 'bg-success text-white' : 'bg-danger text-white'
@@ -125,7 +110,6 @@
                                             class="user-image" />
                                         }
                                     </td>
-                                    <!-- Action -->
                                     <td>
                                         <div class="d-flex align-items-center gap-2">
                                             <button type="button" class="btn btn-success btn-sm text-white"

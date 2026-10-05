@@ -92,15 +92,10 @@
                                 ) {
                                 <tr>
                                     <td>{{ (pagesize.offset - 1) * pagesize.limit + $index + 1 }}</td>
-
                                     <td>{{ getFullName(item) }}</td>
-
                                     <td>{{ item?.phone || 'NA' }}</td>
-
                                     <td>{{ item?.national_id_no || 'NA' }}</td>
-
                                     <td>{{ item?.company_name || 'NA' }}</td>
-
                                     <td>
                                         {{
                                         item?.employee?.first_name
@@ -108,9 +103,7 @@
                                         : (item?.employee_name || 'NA')
                                         }}
                                     </td>
-
                                     <td>{{ item?.purpose || 'NA' }}</td>
-
                                     <td>
                                         {{ item?.check_in_time || item?.checkin_time || item?.created_at || 'NA' }}
                                     </td>
@@ -134,7 +127,6 @@
                                                 <i class="fa fa-pencil"></i>
                                             </button>
 
-                                            <!-- Checkout Button -->
                                             @if (canCheckout(item)) {
                                             <button type="button" class="btn btn-warning btn-sm"
                                                 (click)="onCheckout(item)" title="Check-Out">
@@ -142,7 +134,6 @@
                                             </button>
                                             }
 
-                                            <!-- Delete Button -->
                                             <button type="button" class="btn btn-danger btn-sm text-white"
                                                 (click)="onDelete(item)" title="Delete">
                                                 <i class="fa fa-trash"></i>

@@ -92,17 +92,11 @@
                                 ) {
                                 <tr>
                                     <td>{{ (pagesize.offset - 1) * pagesize.limit + $index + 1 }}</td>
-
                                     <td>{{ getFullName(item) }}</td>
-
                                     <td>{{ item?.email || 'NA' }}</td>
-
                                     <td>{{ item?.phone || 'NA' }}</td>
-
                                     <td>{{ item?.username || 'NA' }}</td>
-
                                     <td>{{ item?.role?.name || 'NA' }}</td>
-
                                     <td>
                                         <span class="badge border rounded-lg! b-0 py-2 font-medium" [ngClass]="
                             item?.status ? 'bg-success text-white' : 'bg-danger text-white'
