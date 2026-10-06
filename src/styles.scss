@@ -1,24 +1,21 @@
 @use "tailwindcss" as *;
 @use "ngx-toastr/toastr";
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');/* You can add global styles to this file, and also import other style files */
 
 /* =========================================
    Global Font Configuration
 ========================================= */
-
-:root {
-  --bs-body-font-family: 'Poppins', sans-serif;
-  --bs-font-sans-serif: 'Poppins', sans-serif;
+*{
+  box-sizing: border-box;
+  font-family: 'Poppins';
+  font-size: 14px;
 }
 
-html,
 body {
-  height: 100%;
+  background-color: #f5f5f9 !important;
   margin: 0;
   padding: 0;
-  background-color: #f5f5f9;
-  font-family: 'Poppins', sans-serif !important;
 }
-
 *,
 *::before,
 *::after {
@@ -333,4 +330,196 @@ img.user-image {
     background: #fee2e2;
     color: #ef4444;
   }
+}
+
+.card {
+  background: #ffffff;
+  color: #0f172a;
+  position: relative;
+  transition: all 0.25s ease;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05);
+
+  &:hover {
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+    transform: translateY(-1px);
+  }
+}
+
+.card-header {
+  min-height: 48px;
+  padding: 10px 14px !important;
+  // background: #ffffff;
+  border-bottom: 1px solid #e2e8f0;
+  border-top-left-radius: 12px !important;
+  border-top-right-radius: 12px !important;
+
+  .header-part {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-right: 0;
+  }
+
+  span,
+  h5,
+  h6 {
+    font-size: 13px;
+    font-weight: 600;
+    margin: 0;
+    letter-spacing: 0.2px;
+  }
+}
+
+.card-body {
+  padding: 12px !important;
+  background: #ffffff;
+}
+
+.card {
+  background: #ffffff;
+  color: #0f172a;
+  position: relative;
+  transition: all 0.25s ease;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05);
+
+  &:hover {
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+    transform: translateY(-1px);
+  }
+}
+
+.card-header {
+  min-height: 48px;
+  padding: 10px 14px !important;
+  border-bottom: 1px solid #e2e8f0;
+  border-top-left-radius: 12px !important;
+  border-top-right-radius: 12px !important;
+
+  .header-part {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-right: 0;
+  }
+
+  span,
+  h5,
+  h6 {
+    font-size: 13px;
+    font-weight: 600;
+    margin: 0;
+    letter-spacing: 0.2px;
+  }
+}
+
+.card-body {
+  padding: 12px !important;
+  background: #ffffff;
+}
+
+/* =========================================
+   Card Header
+========================================= */
+.card-header {
+    position: relative;               
+    min-height: 48px;
+    height: 48px;                     
+    padding: 10px 14px !important;
+    border-bottom: 1px solid #e2e8f0;
+    border-top-left-radius: 12px !important;
+    border-top-right-radius: 12px !important;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+}
+
+.header-part {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-right: 0;
+}
+
+.header-part > span,
+.header-part h5,
+.header-part h6 {
+    font-size: 13px;
+    font-weight: 600;
+    margin: 0;
+    letter-spacing: 0.2px;
+    z-index: 2;
+}
+
+.counting {
+    z-index: 2;
+}
+
+.counting span {
+    font-size: 13px;
+    color: #64748b;
+}
+pagination-controls {
+  margin-top: 15px;
+  
+}
+/* =========================================
+   Pagination — absolute center
+========================================= */
+.pagination-wrapper {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 0;
+    z-index: 1;
+    
+    /* YAHAN MARGIN TOP ADD KIYA HAI */
+    margin-top: 15px; 
+}
+
+/* ngx-pagination overrides — chhota size */
+.pagination-wrapper ::ng-deep .ngx-pagination {
+    margin: 0 !important;
+    padding: 0 !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    line-height: 1;
+    height: 22px;                 
+}
+
+.pagination-wrapper ::ng-deep .ngx-pagination li {
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: 1;
+}
+
+.pagination-wrapper ::ng-deep .ngx-pagination li a,
+.pagination-wrapper ::ng-deep .ngx-pagination li span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 22px;
+    height: 22px;                 
+    padding: 0 6px;
+    border-radius: 4px;
+    font-size: 11px;              
+    line-height: 1;
+}
+
+.pagination-wrapper ::ng-deep .ngx-pagination .current {
+    background: #2563eb !important;
+    color: #fff !important;
+    border-radius: 4px;
 }
