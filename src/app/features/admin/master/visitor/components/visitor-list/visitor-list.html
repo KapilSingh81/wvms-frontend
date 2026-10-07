@@ -99,31 +99,43 @@
                                     <td>
                                         {{
                                         item?.employee?.first_name
-                                        ? (item?.employee?.first_name + ' ' + (item?.employee?.last_name || '')).trim()
-                                        : (item?.employee_name || 'NA')
+                                        ? (
+                                        item?.employee?.first_name +
+                                        ' ' +
+                                        (item?.employee?.last_name || '')
+                                        ).trim()
+                                        : item?.employee_name || 'NA'
                                         }}
                                     </td>
                                     <td>{{ item?.purpose || 'NA' }}</td>
                                     <td>
                                         {{ item?.check_in_time || item?.checkin_time || item?.created_at || 'NA' }}
                                     </td>
-<td>
-    {{
-        item?.created_by_user?.first_name
-        ? (item?.created_by_user?.first_name + ' ' + (item?.created_by_user?.last_name || '')).trim()
-        : (item?.created_by_user?.username || 'NA')
-    }}
-</td>
+                                    <td>
+                                        {{
+                                        item?.created_by_user?.first_name
+                                        ? (
+                                        item?.created_by_user?.first_name +
+                                        ' ' +
+                                        (item?.created_by_user?.last_name || '')
+                                        ).trim()
+                                        : item?.created_by_user?.username || 'NA'
+                                        }}
+                                    </td>
                                     <td>
                                         {{ item?.check_out_time || item?.checkout_time || '—' }}
                                     </td>
-<td>
-    {{
-        item?.checked_out_by_user?.first_name
-        ? (item?.checked_out_by_user?.first_name + ' ' + (item?.checked_out_by_user?.last_name || '')).trim()
-        : (item?.checked_out_by_user?.username || 'NA')
-    }}
-</td>
+                                    <td>
+                                        {{
+                                        item?.checked_out_by_user?.first_name
+                                        ? (
+                                        item?.checked_out_by_user?.first_name +
+                                        ' ' +
+                                        (item?.checked_out_by_user?.last_name || '')
+                                        ).trim()
+                                        : item?.checked_out_by_user?.username || 'NA'
+                                        }}
+                                    </td>
                                     <td class="pan-card-cell">
                                         @if (item?.image) {
                                         <img [src]="getImageUrl(item)" (error)="onImageError($event)" alt="Visitor"
