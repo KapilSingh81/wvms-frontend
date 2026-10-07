@@ -128,7 +128,9 @@ export class ManageDashboard implements OnInit {
       { key: 'host', title: 'Person to Meet' },
       { key: 'purpose', title: 'Purpose' },
       { key: 'check_in', title: 'Check In' },
+      { key: 'checked_in_by', title: 'Checked In By' },
       { key: 'check_out', title: 'Check Out' },
+      { key: 'checked_out_by', title: 'Checked Out By' },
       { key: 'status', title: 'Status' },
       { key: 'photo', title: 'Photo' },
       { key: 'action', title: 'Action' },
@@ -174,29 +176,29 @@ export class ManageDashboard implements OnInit {
     this.isLoading = true;
     this.isEmployeeView = false;
     this.dashboardService.getDashboardData(this.fromDate, this.toDate, this.selectedType).subscribe((res: any) => {
-        this.ngZone.run(() => {
-          this.isLoading = false;
-          this.isFiltering = false;
-          const body = res?.body ?? res;
-          if (body?.success === true) {
-            const data = body?.data ?? {};
-            this.summary = data?.summary ?? this.summary;
-            this.updateCards();
-            this.allVisitors = data?.visitors ?? [];
-            this.hasStillInsideVisitor = this.allVisitors.some((v: any) => this.isStillInside(v));
-            this.columns = this.getVisitorColumns();
-            this.applyFilterAndPagination();
-          } else {
-            this.allVisitors = [];
-            this.visitorList = [];
-            this.pagesize.count = 0;
-            this.hasStillInsideVisitor = false;
-            this.columns = this.getVisitorColumns();
-            this.notification.error(body?.message || 'Failed to load dashboard');
-          }
-          this.cdr.detectChanges();
-        });
+      this.ngZone.run(() => {
+        this.isLoading = false;
+        this.isFiltering = false;
+        const body = res?.body ?? res;
+        if (body?.success === true) {
+          const data = body?.data ?? {};
+          this.summary = data?.summary ?? this.summary;
+          this.updateCards();
+          this.allVisitors = data?.visitors ?? [];
+          this.hasStillInsideVisitor = this.allVisitors.some((v: any) => this.isStillInside(v));
+          this.columns = this.getVisitorColumns();
+          this.applyFilterAndPagination();
+        } else {
+          this.allVisitors = [];
+          this.visitorList = [];
+          this.pagesize.count = 0;
+          this.hasStillInsideVisitor = false;
+          this.columns = this.getVisitorColumns();
+          this.notification.error(body?.message || 'Failed to load dashboard');
+        }
+        this.cdr.detectChanges();
       });
+    });
   }
 
   // ==================== LOAD EMPLOYEES ====================
@@ -300,7 +302,7 @@ export class ManageDashboard implements OnInit {
     if (this.pagesize.offset > maxPage) {
       this.pagesize.offset = 1;
     }
-    this.hasStillInsideVisitor =!this.isEmployeeView && filtered.some((item: any) => this.isStillInside(item));
+    this.hasStillInsideVisitor = !this.isEmployeeView && filtered.some((item: any) => this.isStillInside(item));
 
     if (!this.isEmployeeView) {
       this.columns = this.getVisitorColumns();

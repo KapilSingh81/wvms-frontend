@@ -65,7 +65,9 @@ export class VisitorList implements OnInit {
       { key: 'employee', title: 'Meeting With' },
       { key: 'purpose', title: 'Purpose' },
       { key: 'checkin', title: 'Check-In' },
+      { key: 'checked_in_by', title: 'Checked In By' },
       { key: 'checkout', title: 'Check-Out' },
+      { key: 'checked_out_by', title: 'Checked Out By' },
       { key: 'image', title: 'Photo' },
       { key: 'action', title: 'Action' },
     ];
@@ -95,17 +97,17 @@ export class VisitorList implements OnInit {
     const keyword = this.searchKeyword.trim().toLowerCase();
     const filtered = keyword
       ? this.allVisitors.filter((item: any) => {
-          const fullName =
-            `${item?.first_name || ''} ${item?.last_name || ''}`.toLowerCase();
-          return (
-            fullName.includes(keyword) ||
-            item?.phone?.toLowerCase().includes(keyword) ||
-            item?.email?.toLowerCase().includes(keyword) ||
-            item?.national_id_no?.toLowerCase().includes(keyword) ||
-            item?.company_name?.toLowerCase().includes(keyword) ||
-            item?.purpose?.toLowerCase().includes(keyword)
-          );
-        })
+        const fullName =
+          `${item?.first_name || ''} ${item?.last_name || ''}`.toLowerCase();
+        return (
+          fullName.includes(keyword) ||
+          item?.phone?.toLowerCase().includes(keyword) ||
+          item?.email?.toLowerCase().includes(keyword) ||
+          item?.national_id_no?.toLowerCase().includes(keyword) ||
+          item?.company_name?.toLowerCase().includes(keyword) ||
+          item?.purpose?.toLowerCase().includes(keyword)
+        );
+      })
       : this.allVisitors;
     this.visitorList = filtered;
     this.pagesize.count = filtered.length;

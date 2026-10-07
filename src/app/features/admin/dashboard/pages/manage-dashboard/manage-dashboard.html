@@ -177,7 +177,15 @@
                                         <td>{{ getHostName(item) }}</td>
                                         <td>{{ item?.purpose || 'NA' }}</td>
                                         <td>{{ formatTime(item?.check_in_time) }}</td>
+                                        <td>
+                                            {{ item?.created_by_user?.first_name || '' }}
+                                            {{ item?.created_by_user?.last_name || '' }}
+                                        </td>
                                         <td>{{ formatTime(item?.check_out_time) }}</td>
+                                        <td>
+                                            {{ item?.checked_out_by_user?.first_name || '' }}
+                                            {{ item?.checked_out_by_user?.last_name || '' }}
+                                        </td>
                                         <td>
                                             <span class="badge border rounded-lg! b-0 py-2 font-medium"
                                                 [ngClass]="getStatusBadge(item?.visit_status)">
