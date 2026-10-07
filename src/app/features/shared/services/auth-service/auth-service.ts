@@ -61,25 +61,18 @@ login(payload: any): Observable<any> {
           role_id: user?.role?.id,
         };
 
-        // 1. Token → Cookie
         this.cookieService.set('wvms-token', token, {
           path: '/',
           secure: false,
           sameSite: 'Lax',
         });
 
-        // 2. User → Cookie
         this.cookieService.set('wvms-user', JSON.stringify(userData), {
           path: '/',
           secure: false,
           sameSite: 'Lax',
         });
-
-        // 3. User → IndexedDB
         this.storage.setItem('wvms-user', userData);
-
-        // 4. User → localStorage
-        localStorage.setItem('wvms-user', JSON.stringify(userData));
       }
     }),
     catchError((error: HttpErrorResponse) => of(error))
@@ -92,17 +85,6 @@ login(payload: any): Observable<any> {
   }
 
   getUser(): UserData | null {
-    // 1st: localStorage (sync, fast)
-    const localStr = localStorage.getItem('wvms-user');
-    if (localStr) {
-      try {
-        return JSON.parse(localStr);
-      } catch {
-        // fall through
-      }
-    }
-
-    // 2nd: cookie
     const cookieStr = this.cookieService.get('wvms-user');
     if (cookieStr) {
       try {
@@ -111,7 +93,6 @@ login(payload: any): Observable<any> {
         return null;
       }
     }
-
     return null;
   }
 
@@ -138,14 +119,12 @@ login(payload: any): Observable<any> {
     this.cookieService.delete('wvms-token', '/');
     this.cookieService.delete('wvms-user', '/');
     this.storage.removeItem('wvms-user');
-    localStorage.removeItem('wvms-user');
   }
 
   clearSessionSilently(): void {
     this.clearInvalidToken();
   }
 
-  // ==================== LOGOUT ====================
   logout(): void {
     this.clearInvalidToken();
     this.router.navigate(['/login']);
