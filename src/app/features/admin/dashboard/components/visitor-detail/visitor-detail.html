@@ -10,7 +10,7 @@
         <div class="details-header">
             <div class="header-photo">
                 @if (hasImage()) {
-                <img [src]="getImageUrl()" alt="Visitor" class="visitor-photo" (error)="onImageError($event)" />
+                <img [src]="visitor?.image" alt="Visitor" class="visitor-photo" (error)="onImageError($event)" />
                 } @else {
                 <div class="photo-placeholder">
                     <i class="fa fa-user"></i>

@@ -160,7 +160,7 @@
                                         <td>{{ item?.designation?.name || 'NA' }}</td>
                                         <td>
                                             @if (hasImage(item)) {
-                                            <img [src]="getImageUrl(item)" alt="Employee" class="user-image"
+                                            <img [src]="item?.image" alt="Employee" class="user-image"
                                                 (error)="onImageError($event)" />
                                             }
                                         </td>
@@ -194,7 +194,7 @@
                                         </td>
                                         <td>
                                             @if (hasImage(item)) {
-                                            <img [src]="getImageUrl(item)" alt="Visitor" class="user-image"
+                                            <img [src]="item?.image" alt="Employee" class="user-image"
                                                 (error)="onImageError($event)" />
                                             }
                                         </td>

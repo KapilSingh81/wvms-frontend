@@ -3,12 +3,10 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { NgxPaginationModule } from 'ngx-pagination';
-
 import { CreateRole } from '../create-role/create-role';
 import { RoleService } from '../../services/role-service';
 import { NotificationService } from '../../../../../shared/services/notification-service/notificaiton';
 import { DeleteConfirnmation } from '../../../../../shared/components/delete-confirnmation/delete-confirnmation';
-
 @Component({
   selector: 'app-role-list',
   standalone: true,
@@ -23,14 +21,11 @@ export class RoleList implements OnInit {
 
   bsModalRef!: BsModalRef;
 
-  // ==================== DATA ====================
   isLoading = false;
   searchKeyword = '';
-
   allRoles: any[] = [];   
   roleList: any[] = [];  
   columns: any[] = [];
-
   pagesize = {
     limit: 25,
     offset: 1,

@@ -201,7 +201,6 @@ export class ManageDashboard implements OnInit {
     });
   }
 
-  // ==================== LOAD EMPLOYEES ====================
   loadEmployees(): void {
     this.isLoading = true;
     this.isEmployeeView = true;
@@ -404,17 +403,6 @@ export class ManageDashboard implements OnInit {
 
   hasImage(item: any): boolean {
     return !!item?.image;
-  }
-
-  getImageUrl(item: any): string {
-    const img = item?.image;
-    if (!img) return '';
-
-    if (img.startsWith('http://') || img.startsWith('https://')) {
-      return img;
-    }
-    const cleanPath = img.startsWith('/') ? img.slice(1) : img;
-    return `http://89.116.34.155:4000/${cleanPath}`;
   }
 
   onImageError(event: any): void {

@@ -11,7 +11,6 @@ import { HttpService } from '../../../../shared/services/http.services.ts/http.s
 export class RoleService {
   private apiService = inject(HttpService);
 
-  // ==================== LIST ====================
   roleList(): Observable<any> {
     const url = API_CONSTANT.roleList;
     return this.apiService.get(url).pipe(
@@ -19,7 +18,6 @@ export class RoleService {
     );
   }
 
-  // ==================== CREATE ====================
   createRole(payload: any): Observable<any> {
     const url = API_CONSTANT.createRole;
     return this.apiService.post(url, payload).pipe(
@@ -27,7 +25,6 @@ export class RoleService {
     );
   }
 
-  // ==================== UPDATE ====================
   updateRole(payload: any): Observable<any> {
     const url = API_CONSTANT.updateRole.replace('{id}', payload.id);
     return this.apiService.put(url, payload).pipe(
@@ -35,7 +32,6 @@ export class RoleService {
     );
   }
 
-  // ==================== DELETE ====================
   deleteRole(payload: any): Observable<any> {
     const url = API_CONSTANT.deleteRole.replace('{id}', payload.id);
     return this.apiService.delete(url).pipe(

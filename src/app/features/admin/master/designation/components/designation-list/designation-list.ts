@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { NgxPaginationModule } from 'ngx-pagination';
-
 import { CreateDesignation } from '../create-designation/create-designation';
 import { DeleteConfirnmation } from '../../../../../shared/components/delete-confirnmation/delete-confirnmation';
 import { DesignationService } from '../../services/designation-service';

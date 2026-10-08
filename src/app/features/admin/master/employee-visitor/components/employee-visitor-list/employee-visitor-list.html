@@ -106,7 +106,7 @@
                                     </td>
                                     <td class="pan-card-cell">
                                         @if (item?.image) {
-                                        <img [src]="getImageUrl(item)" (error)="onImageError($event)" alt="PAN Card"
+                                        <img [src]="item?.image" (error)="onImageError($event)" alt="PAN Card"
                                             class="user-image" />
                                         }
                                     </td>

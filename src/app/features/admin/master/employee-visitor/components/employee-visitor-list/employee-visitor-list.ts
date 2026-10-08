@@ -205,16 +205,6 @@ export class EmployeeVisitorList implements OnInit {
     return `${fn} ${ln}`.trim() || 'NA';
   }
 
-  getImageUrl(item: any): string {
-    const img = item?.image;
-    if (!img) return '';
-    if (img.startsWith('http://') || img.startsWith('https://')) {
-      return img;
-    }
-    const cleanPath = img.startsWith('/') ? img.slice(1) : img;
-    return `${this.imageBaseUrl}${cleanPath}`;
-  }
-
   onImageError(event: any): void {
     event.target.style.display = 'none';
   }

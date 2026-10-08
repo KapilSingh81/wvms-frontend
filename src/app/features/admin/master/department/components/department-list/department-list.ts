@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { NgxPaginationModule } from 'ngx-pagination';
-
 import { CreateDepartment } from '../create-department/create-department';
 import { DepartmentService } from '../../services/department-service';
 import { NotificationService } from '../../../../../shared/services/notification-service/notificaiton';

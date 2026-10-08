@@ -35,7 +35,6 @@ export class AuthService {
 
   isRefreshing = signal(false);
 
-  // ==================== LOGIN ====================
 login(payload: any): Observable<any> {
   return this.apiService.post(API_CONSTANT.login, payload).pipe(
     tap((res: any) => {
@@ -79,7 +78,6 @@ login(payload: any): Observable<any> {
   );
 }
 
-  // ==================== GETTERS ====================
   getToken(): string | null {
     return this.cookieService.get('wvms-token') || null;
   }

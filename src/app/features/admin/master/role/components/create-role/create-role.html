@@ -9,14 +9,11 @@
     <form [formGroup]="roleForm" (ngSubmit)="submit()">
         <div class="_card white-bg">
             <div class="row">
-
-                <!-- Role Name -->
                 <div class="col-md-12 mb-3">
                     <label class="form-label">
                         Role Name <span class="text-danger">*</span>
                     </label>
                     <input type="text" class="form-control" placeholder="Enter Role Name" formControlName="name" />
-
                     @if (roleForm.get('name')?.invalid &&
                     (roleForm.get('name')?.dirty ||
                     roleForm.get('name')?.touched)) {

@@ -15,22 +15,10 @@ export class VisitorDetail implements OnInit {
   private bsModalService = inject(BsModalService);
 
   constructor() { }
-
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   cancel(): void {
     this.bsModalService.hide();
-  }
-
-  getImageUrl(): string {
-    const img = this.visitor?.image;
-    if (!img) return '';
-    if (img.startsWith('http://') || img.startsWith('https://')) {
-      return img;
-    }
-    const cleanPath = img.startsWith('/') ? img.slice(1) : img;
-    return `http://89.116.34.155:4000/${cleanPath}`;
   }
 
   hasImage(): boolean {
